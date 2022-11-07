@@ -16,3 +16,11 @@ This repository will contain things like code for the website and Arduino/Raspbe
 - An interview of a person/company connected to my final project.
 - Building the first version of my practical test.
 - Building the first version of the website.
+
+## The way this repository will work
+
+- My full release (v1.0.0) is planned for in June 2023 but may come a bit earlier.
+
+- Major releases (e.g. v0.2.0) will corresponded with certain phases of my project and will be on a monthly to bimonthly basis.
+
+- Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a daily basis.
