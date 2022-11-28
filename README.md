@@ -23,4 +23,4 @@ This repository will contain things like code for the website and Arduino/Raspbe
 
 - Major releases (e.g. v0.2.0) will corresponded with certain phases of my project and will be on a monthly to bimonthly basis.
 
-- Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a daily basis.
+- Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a weekly/daily basis.
