@@ -1,46 +1,47 @@
-import smbus2
+"""WPSE342 sensor script"""
 import time
+import smbus2
 
 # Initialize I2C bus
 bus = smbus2.SMBus(1)
 
 # WPSE342 sensor address
-address = 0x76
+ADDRESS = 0x76
 
-# Read temperature
 def read_temperature():
-    data = bus.read_i2c_block_data(address, 0xE3, 2)
+    """Read temperature."""
+    data = bus.read_i2c_block_data(ADDRESS, 0xE3, 2)
     temp = ((data[0] << 8) + data[1]) / 100
     return temp
 
-# Read humidity
 def read_humidity():
-    data = bus.read_i2c_block_data(address, 0xE5, 2)
+    """Read humidity."""
+    data = bus.read_i2c_block_data(ADDRESS, 0xE5, 2)
     humidity = ((data[0] << 8) + data[1]) / 1024
     return humidity
 
-# Read CO2
-def read_CO2():
-    data = bus.read_i2c_block_data(address, 0xE8, 2)
-    CO2 = ((data[0] << 8) + data[1]) / 1024
-    return CO2
+def read_co2():
+    """Read CO2."""
+    data = bus.read_i2c_block_data(ADDRESS, 0xE8, 2)
+    co2 = ((data[0] << 8) + data[1]) / 1024
+    return co2
 
-# Read TVOC
-def read_TVOC():
-    data = bus.read_i2c_block_data(address, 0xE7, 2)
-    TVOC = ((data[0] << 8) + data[1]) / 1024
-    return TVOC
+def read_tvoc():
+    """Read TVOC."""
+    data = bus.read_i2c_block_data(ADDRESS, 0xE7, 2)
+    tvoc = ((data[0] << 8) + data[1]) / 1024
+    return tvoc
 
 # Main loop
 while True:
-    temp = read_temperature()
-    humidity = read_humidity()
-    CO2 = read_CO2()
-    TVOC = read_TVOC()
+    finaltemp = read_temperature()
+    finalhumidity = read_humidity()
+    finalCO2 = read_co2()()
+    finalTVOC = read_tvoc()
 
-    print("Temperature:", temp, "C")
-    print("Humidity:", humidity, "%")
-    print("CO2:", CO2, "ppm")
-    print("TVOC:", TVOC, "ppb")
+    print("Temperature:", finaltemp, "C")
+    print("Humidity:", finalhumidity, "%")
+    print("CO2:", finalCO2, "ppm")
+    print("TVOC:", finalTVOC, "ppb")
 
-    time.sleep(1)
+    time.sleep(300)
