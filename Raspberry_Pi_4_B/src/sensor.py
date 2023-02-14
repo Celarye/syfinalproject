@@ -1,7 +1,7 @@
 """WPSE342 sensor script"""
 import time
-import smbus2
 import socket
+import smbus2
 
 # Define the IP address and port of the receiving PC
 IP_ADDRESS = '192.168.1.2'

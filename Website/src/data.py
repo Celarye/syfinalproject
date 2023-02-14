@@ -1,3 +1,4 @@
+"""Data collection script"""
 import socket
 
 # Define the IP address and port to listen on
