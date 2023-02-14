@@ -11,7 +11,7 @@ PORT = 20
 bus = smbus2.SMBus(1)
 
 # WPSE342 sensor address
-ADDRESS = 0x76
+ADDRESS = 0x5b
 
 def read_temperature():
     """Read temperature."""
