@@ -1,23 +1,23 @@
 """Data collection script"""
-import socket
+from socket import socket, AF_INET, SOCK_STREAM
 
 # Define the IP address and port to listen on
 IP_ADDRESS = '192.168.0.119'
-PORT = 6776
+PORT = 20
 
 # Create a socket object
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+soc = socket(AF_INET, SOCK_STREAM)
 
 # Bind the socket to the IP address and port
-s.bind((IP_ADDRESS, PORT))
+soc.connect((IP_ADDRESS, PORT))
 
 # Listen for incoming connections
-s.listen()
+soc.listen()
 
 # Accept a connection and receive data indefinitely
 while True:
     # Accept a connection from a client
-    client_socket, address = s.accept()
+    client_socket, address = soc.accept()
     print(f'Connection from {address[0]}:{address[1]} has been established.')
 
     # Receive data from the client
