@@ -2,8 +2,8 @@
 import socket
 
 # Define the IP address and port to listen on
-IP_ADDRESS = '0.0.0.0'
-PORT = 5555
+IP_ADDRESS = '192.168.0.255'
+PORT = 6776
 
 # Create a socket object
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
