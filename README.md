@@ -7,16 +7,15 @@ This repository will contain things like code for the website and Raspberry Pi, 
 
 ## Currently working on
 
+- Doing more research for my documentation.
 - Expanding and rewriting the documentation.
-- Expanding and rewriting the powerpoint.
 - Doing research regarding my practical test.
+- Building the first version of the website.
 - Building the first version of my practical test.
 
 ## To do
 
-- More research for my documentation.
 - An interview of a person/company connected to my final project.
-- Building the first version of the website.
 
 ## The way this repository will work
 
