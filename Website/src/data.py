@@ -2,7 +2,7 @@
 import socket
 
 # Define the IP address and port to listen on
-IP_ADDRESS = '192.168.0.255'
+IP_ADDRESS = '192.168.0.119'
 PORT = 6776
 
 # Create a socket object

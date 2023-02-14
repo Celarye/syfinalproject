@@ -4,7 +4,7 @@ import socket
 import smbus2
 
 # Define the IP address and port of the receiving PC
-IP_ADDRESS = '192.168.0.234'
+IP_ADDRESS = '192.168.0.214'
 PORT = 6776
 
 # Initialize I2C bus
