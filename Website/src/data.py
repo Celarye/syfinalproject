@@ -3,7 +3,7 @@ from socket import socket, AF_INET, SOCK_STREAM
 
 # Define the IP address and port to listen on
 IP_ADDRESS = '192.168.0.214'
-PORT = 20
+PORT = 5555
 
 # Create a socket object
 soc = socket(AF_INET, SOCK_STREAM)
