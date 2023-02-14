@@ -15,25 +15,25 @@ ADDRESS = 0x5b
 
 def read_temperature():
     """Read temperature."""
-    data = bus.read_i2c_block_data(ADDRESS, 0xE3, 2)
+    data = bus.read_i2c_block_data(ADDRESS, 0x5b, 2)
     temp = ((data[0] << 8) + data[1]) / 100
     return temp
 
 def read_humidity():
     """Read humidity."""
-    data = bus.read_i2c_block_data(ADDRESS, 0xE5, 2)
+    data = bus.read_i2c_block_data(ADDRESS, 0x5b, 2)
     humidity = ((data[0] << 8) + data[1]) / 1024
     return humidity
 
 def read_co2():
     """Read CO2."""
-    data = bus.read_i2c_block_data(ADDRESS, 0xE8, 2)
+    data = bus.read_i2c_block_data(ADDRESS, 0x5b, 2)
     co2 = ((data[0] << 8) + data[1]) / 1024
     return co2
 
 def read_tvoc():
     """Read TVOC."""
-    data = bus.read_i2c_block_data(ADDRESS, 0xE7, 2)
+    data = bus.read_i2c_block_data(ADDRESS, 0x5b, 2)
     tvoc = ((data[0] << 8) + data[1]) / 1024
     return tvoc
 
