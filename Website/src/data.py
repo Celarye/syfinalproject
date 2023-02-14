@@ -9,7 +9,7 @@ PORT = 20
 soc = socket(AF_INET, SOCK_STREAM)
 
 # Bind the socket to the IP address and port
-soc.connect((IP_ADDRESS, PORT))
+soc.bind((IP_ADDRESS, PORT))
 
 # Listen for incoming connections
 soc.listen()

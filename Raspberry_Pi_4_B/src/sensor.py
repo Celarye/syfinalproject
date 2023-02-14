@@ -1,6 +1,6 @@
 """WPSE342 sensor script"""
 import time
-import socket
+from socket import socket, AF_INET, SOCK_STREAM
 import smbus2
 
 # Define the IP address and port of the receiving PC
@@ -38,10 +38,10 @@ def read_tvoc():
     return tvoc
 
 # Create a socket object
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+soc = socket(AF_INET, SOCK_STREAM)
 
 # Connect to the server
-s.connect((IP_ADDRESS, PORT))
+soc.connect((IP_ADDRESS, PORT))
 
 # Main loop
 while True:
@@ -54,6 +54,6 @@ while True:
     message = f'Temperature: {finaltemp} C, Humidity: {finalhumidity}%, CO2: {finalCO2} ppm, TVOC: {finalTVOC} ppb'
 
     # Send the message to the server
-    s.send(message.encode())
+    soc.send(message.encode())
 
     time.sleep(300)
