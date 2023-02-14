@@ -1,6 +1,11 @@
 """WPSE342 sensor script"""
 import time
 import smbus2
+import socket
+
+# Define the IP address and port of the receiving PC
+IP_ADDRESS = '192.168.1.2'
+PORT = 5555
 
 # Initialize I2C bus
 bus = smbus2.SMBus(1)
@@ -32,6 +37,12 @@ def read_tvoc():
     tvoc = ((data[0] << 8) + data[1]) / 1024
     return tvoc
 
+# Create a socket object
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the server
+s.connect((IP_ADDRESS, PORT))
+
 # Main loop
 while True:
     finaltemp = read_temperature()
@@ -39,9 +50,10 @@ while True:
     finalCO2 = read_co2()()
     finalTVOC = read_tvoc()
 
-    print("Temperature:", finaltemp, "C")
-    print("Humidity:", finalhumidity, "%")
-    print("CO2:", finalCO2, "ppm")
-    print("TVOC:", finalTVOC, "ppb")
+    # Construct a message with the data
+    message = f'Temperature: {finaltemp} C, Humidity: {finalhumidity}%, CO2: {finalCO2} ppm, TVOC: {finalTVOC} ppb'
+
+    # Send the message to the server
+    s.send(message.encode())
 
     time.sleep(300)
