@@ -6,7 +6,7 @@ from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_ccs811
 
 # Initialize I2C bus and sensors
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = busio.I2C(board.SCL_1, board.SDA_1)
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 ccs811 = adafruit_ccs811.CCS811(i2c)
 
