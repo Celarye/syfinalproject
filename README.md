@@ -1,5 +1,6 @@
 # Senior year final project
-### This is a repository containing everything regarding my final project in my senior year of high school (6TW).
+
+## This is a repository containing everything regarding my final project in my senior year of high school (6TW)
 
 This repository will contain things like code for the website and Raspberry Pi, documentation of this project (in Dutch), spreadsheets of collected data and pictures of my practical test. For more info I recommend reading the documentation (the `FinalProject.docx` file) or checking out the corresponding powerpoint (the `FinalProject.pptx` file).
 
