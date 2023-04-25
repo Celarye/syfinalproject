@@ -1,53 +1,62 @@
-import logo from './includes/plant-icon.png';
+import React from 'react';
+import Navbar from './components/Navbar';
 import data from './data/data.json';
-import './App.css';
+import './styles/main.css';
 
 console.log(data);
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <div>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h>
-            <b>Plants Management</b>
-          </h>
-        </div>
-      </header>
+      <React.Fragment>
+        <Navbar />
+      </React.Fragment>
       <body className="App-body">
         <div>
-          <br></br>
           <p>
-            <i>Last fetched: {data.creationDate}</i>
+            <i>Last Fetched: {data.creationDate}</i>
           </p>
           <h>
-            <b>Global Values:</b>
+            <b>Global Values</b>
           </h>
           <p>Temperature: {data.global.temp.at(-1)}</p>
-          <br></br>
           <h>
-            <b>Plant specific soil moisture values:</b>
+            <b className="App-body-title">
+              Plant Specific Soil Moisture Values
+            </b>
           </h>
-          <table className="App-body-table">
-            <tr>
-              <th>Plant 1</th>
-              <th>Plant 2</th>
-              <th>Plant 3</th>
-            </tr>
-            <tr>
-              <td>{data.plants.plant1.soilMoisture.at(-1)}</td>
-              <td>{data.plants.plant2.soilMoisture.at(-1)}</td>
-              <td>{data.plants.plant3.soilMoisture.at(-1)}</td>
-            </tr>
-          </table>
+          <div className="App-body-row1">
+            <div className="App-body-column">
+              <div className="App-body-row2">
+                <h>Plant 1</h>
+              </div>
+              <div className="App-body-row3">
+                <p>{data.plants.plant1.soilMoisture.at(-1)}</p>
+              </div>
+            </div>
+            <div className="App-body-column">
+              <div className="App-body-row2">
+                <h>Plant 2</h>
+              </div>
+              <div className="App-body-row3">
+                <p>{data.plants.plant2.soilMoisture.at(-1)}</p>
+              </div>
+            </div>
+            <div className="App-body-column">
+              <div className="App-body-row2">
+                <h>Plant 3</h>
+              </div>
+              <div className="App-body-row3">
+                <p>{data.plants.plant3.soilMoisture.at(-1)}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </body>
       <footer className="App-footer">
         <div>
-          <br></br>
           <p>
-            Made by Celarye using{' '}
+            Made by Celarye Using{' '}
             <a className="App-link" href="https://create-react-app.dev/">
               Create React App
             </a>
