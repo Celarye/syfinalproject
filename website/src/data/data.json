@@ -1,0 +1,18 @@
+{
+  "global": {
+    "temp": ["21,3°C"],
+    "humidity": []
+  },
+
+  "plants": {
+    "plant1": {
+      "soilMoisture": []
+    },
+    "plant2": {
+      "soilMoisture": []
+    },
+    "plant3": {
+      "soilMoisture": []
+    }
+  }
+}
