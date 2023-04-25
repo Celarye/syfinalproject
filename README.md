@@ -21,7 +21,5 @@ This repository will contain things like code for the website and Raspberry Pi, 
 ## The way this repository will work
 
 - My full release (v1.0.0) is planned for in June 2023 but may come a bit earlier.
-
 - Major releases (e.g. v0.2.0) will corresponded with certain phases of my project and will be on a monthly to bimonthly basis.
-
 - Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a weekly basis.
