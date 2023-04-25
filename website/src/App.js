@@ -10,22 +10,47 @@ function App() {
       <header className="App-header">
         <div>
           <img src={logo} className="App-logo" alt="logo" />
-          <h>Plants Management</h>
+          <h>
+            <b>Plants Management</b>
+          </h>
         </div>
       </header>
-      <body>
+      <body className="App-body">
         <div>
-          <h>Global Values:</h>
-          <p>{data.global.temp.at(-1)}</p>
-          <h>Plant specific values:</h>
-          <p>\Data</p>
+          <br></br>
+          <p>
+            <i>Last fetched: {data.creationDate}</i>
+          </p>
+          <h>
+            <b>Global Values:</b>
+          </h>
+          <p>Temperature: {data.global.temp.at(-1)}</p>
+          <br></br>
+          <h>
+            <b>Plant specific soil moisture values:</b>
+          </h>
+          <table className="App-body-table">
+            <tr>
+              <th>Plant 1</th>
+              <th>Plant 2</th>
+              <th>Plant 3</th>
+            </tr>
+            <tr>
+              <td>{data.plants.plant1.soilMoisture.at(-1)}</td>
+              <td>{data.plants.plant2.soilMoisture.at(-1)}</td>
+              <td>{data.plants.plant3.soilMoisture.at(-1)}</td>
+            </tr>
+          </table>
         </div>
       </body>
-      <footer>
+      <footer className="App-footer">
         <div>
+          <br></br>
           <p>
             Made by Celarye using{' '}
-            <a href="https://create-react-app.dev/">Create React App</a>
+            <a className="App-link" href="https://create-react-app.dev/">
+              Create React App
+            </a>
           </p>
         </div>
       </footer>

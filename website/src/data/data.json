@@ -1,4 +1,5 @@
 {
+  "creationDate": "Just Now",
   "global": {
     "temp": ["21,3°C"],
     "humidity": []
@@ -6,13 +7,13 @@
 
   "plants": {
     "plant1": {
-      "soilMoisture": []
+      "soilMoisture": ["70%"]
     },
     "plant2": {
-      "soilMoisture": []
+      "soilMoisture": ["60%"]
     },
     "plant3": {
-      "soilMoisture": []
+      "soilMoisture": ["50%"]
     }
   }
 }
