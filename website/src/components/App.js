@@ -1,16 +1,11 @@
-import React from 'react';
-import Navbar from './components/Navbar';
-import data from './data/data.json';
-import './styles/main.css';
+import data from '../data/data.json';
+import '../styles/main.css';
 
 console.log(data);
 
 function App() {
   return (
     <div className="App">
-      <React.Fragment>
-        <Navbar />
-      </React.Fragment>
       <body className="App-body">
         <div>
           <p>
