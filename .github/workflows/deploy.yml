@@ -11,11 +11,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Change directory
-        run: cd website
       - name: Install Dependencies
+        working-directory: ./website
         run: npm install
       - name: Build
+        working-directory: ./website
         run: npm run build --if-present
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
