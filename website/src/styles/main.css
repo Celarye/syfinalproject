@@ -1,14 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
-.Navbar {
-  background-color: #282c34;
-  min-height: 10vh;
-  font-size: calc(10px + 2vmin);
-  color: white;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Titillium Web', sans-serif;
 }
 
-.App-logo {
-  max-height: 10vh;
+:root {
+  --primaryColor: #282c34;
+  --primaryColorLight: #393a3e;
+  --secondaryColor: #61dafb;
+  --textColor: #eee;
+}
+
+.App-link {
+  color: #61dafb;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -24,48 +31,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.App {
-  background-color: #282c34;
-  min-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-body-row1 {
-  padding-top: 30px;
-}
-
-.App-body-row1:after {
-  content: '';
-  display: table;
-  clear: both;
-}
-
-.App-body-column {
-  width: 33%;
-  float: left;
-}
-
-.App-body-row2 {
-  background-color: #282c34;
-  border: #21242b 3px solid;
-  border-bottom: 0px solid;
-  margin: 0px;
-}
-
-.App-body-row3 {
-  background-color: #282c34;
-  border: #21242b 3px solid;
-  margin: 0px;
-}
-
-.App-link {
-  color: #61dafb;
 }

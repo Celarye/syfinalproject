@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import logo from '../includes/logo.png';
 import '../styles/main.css';
+import '../styles/navbar.css';
 
 function Navbar() {
   const navRef = useRef();
@@ -12,7 +13,7 @@ function Navbar() {
 
   return (
     <header className="Navbar">
-      <img src={logo} className="App-logo" alt="logo" />
+      <img src={logo} className="Navbar-logo App-logo" alt="logo" />
       <h3>House Plants Manager</h3>
       <nav ref={navRef}>
         <a href="/#">Dashboard</a>

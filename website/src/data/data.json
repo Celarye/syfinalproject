@@ -1,8 +1,8 @@
 {
-  "creationDate": "Just Now",
+  "creationDate": ["Just Now"],
   "global": {
     "temp": ["21,3°C"],
-    "humidity": []
+    "humidity": ["50%"]
   },
 
   "plants": {
