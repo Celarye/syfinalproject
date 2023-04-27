@@ -8,14 +8,16 @@
 }
 
 :root {
-  --primaryColor: #282c34;
-  --primaryColorLight: #393a3e;
+  --primaryColor: #22242d;
+  --primaryColorLight: #282c34;
   --secondaryColor: #61dafb;
   --textColor: #eee;
+  --borderColor: black;
+  --borderThickness: 2px;
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--secondaryColor);
 }
 
 @media (prefers-reduced-motion: no-preference) {

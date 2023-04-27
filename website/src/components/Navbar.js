@@ -16,10 +16,10 @@ function Navbar() {
       <img src={logo} className="Navbar-logo App-logo" alt="logo" />
       <h3>House Plants Manager</h3>
       <nav ref={navRef}>
-        <a href="/#">Dashboard</a>
-        <a href="/#">Plant 1</a>
-        <a href="/#">Plant 2</a>
-        <a href="/#">Plant 3</a>
+        <a href="/Dashboard">Dashboard</a>
+        <a href="/Plant1">Plant 1</a>
+        <a href="/Plant2">Plant 2</a>
+        <a href="/Plant3">Plant 3</a>
         <button className="nav-btn nav-close-btn" onClick={showNavBar}>
           <FaTimes />
         </button>
