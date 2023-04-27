@@ -11,6 +11,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Change directory
+        run: cd website
       - name: Install Dependencies
         run: npm install
       - name: Build
