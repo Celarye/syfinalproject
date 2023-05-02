@@ -15,7 +15,6 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-height: 100dvh;
   background-color: var(--primaryColor);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
