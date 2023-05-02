@@ -1,36 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: 'Titillium Web', sans-serif;
+.Main-logo {
+  max-width: 80vh;
 }
 
-:root {
-  --primaryColor: #22242d;
-  --primaryColorLight: #282c34;
-  --secondaryColor: #61dafb;
-  --textColor: #eee;
-  --borderColor: black;
-  --borderThickness: 2px;
-}
-
-.App-link {
-  color: var(--secondaryColor);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Main-text {
 }
