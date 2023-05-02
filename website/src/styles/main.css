@@ -1,6 +1,50 @@
 .Main-logo {
-  max-width: 80vh;
+  max-height: 40vh;
 }
 
-.Main-text {
+.Main-button {
+  min-height: 5vh;
+  min-width: 15vh;
+  margin-bottom: 5vh;
+  background-color: var(--primaryColor);
+  border: 0px solid;
+  border-radius: 10px;
+  color: var(--textColor);
+}
+
+.Main-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5vh;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  color: var(--textColor);
+}
+
+@media screen and (max-width: 715px) {
+  .Main-info {
+    flex-direction: column;
+  }
+  .Main-info-column {
+    padding-left: 0vh;
+    padding-right: 0vh;
+  }
+  .Main-info-column2 {
+    margin-left: 0vh;
+    margin-right: 0vh;
+  }
+}
+
+.Main-info-column {
+  align-self: stretch;
+  max-width: 30vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
+}
+
+.Main-info-column2 {
+  margin-left: 10vh;
+  margin-right: 10vh;
 }

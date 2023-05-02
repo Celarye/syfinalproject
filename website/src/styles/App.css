@@ -13,6 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  max-height: 100vh;
   background-color: var(--primaryColorLight);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
