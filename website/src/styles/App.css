@@ -1,20 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 :root {
-  --primaryColor: #22242d;
+  --primaryColor: #1a1a1a;
   --primaryColorLight: #282c34;
-  --secondaryColor: #61dafb;
+  --secondaryColor: #1987a6;
   --textColor: #eee;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-height: 100vh;
-  background-color: var(--primaryColorLight);
+  max-height: 100dvh;
+  background-color: var(--primaryColor);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
 }

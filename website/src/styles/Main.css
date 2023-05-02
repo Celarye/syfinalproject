@@ -1,15 +1,17 @@
 .Main-logo {
-  max-height: 40vh;
+  max-height: 40dvh;
 }
 
-.Main-button {
-  min-height: 5vh;
-  min-width: 15vh;
-  margin-bottom: 5vh;
-  background-color: var(--primaryColor);
-  border: 0px solid;
-  border-radius: 10px;
-  color: var(--textColor);
+.Main-title {
+  margin: 0;
+  margin-bottom: 1dvh;
+  font-size: 8dvh;
+}
+
+.Main-description {
+  margin: 0;
+  margin-bottom: 5dvh;
+  font-size: large;
 }
 
 .Main-info {
@@ -17,34 +19,47 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: 5vh;
+  margin-bottom: 5dvh;
+  margin-left: 2dvh;
+  margin-right: 2dvh;
   border-top: 1px solid;
   border-bottom: 1px solid;
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--textColor);
+  text-align: left;
+  font-size: large;
+}
+
+.Main-info-column {
+  align-self: auto;
+  max-width: 30dvh;
+  padding-left: 2dvh;
+  padding-right: 2dvh;
+}
+
+.Main-info-column2 {
+  margin-left: 10dvh;
+  margin-right: 10dvh;
+}
+
+.Main-button {
+  min-height: 5dvh;
+  min-width: 15dvh;
+  margin-bottom: 5dvh;
+  background-color: var(--secondaryColor);
+  border: 0px solid;
+  border-radius: 10px;
+  font-size: large;
+  font-weight: bold;
+  color: var(--textColor);
+}
+
+.Main-footer {
+  font-size: larger;
 }
 
 @media screen and (max-width: 715px) {
   .Main-info {
     flex-direction: column;
   }
-  .Main-info-column {
-    padding-left: 0vh;
-    padding-right: 0vh;
-  }
-  .Main-info-column2 {
-    margin-left: 0vh;
-    margin-right: 0vh;
-  }
-}
-
-.Main-info-column {
-  align-self: stretch;
-  max-width: 30vh;
-  padding-left: 2vh;
-  padding-right: 2vh;
-}
-
-.Main-info-column2 {
-  margin-left: 10vh;
-  margin-right: 10vh;
 }

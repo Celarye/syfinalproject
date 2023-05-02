@@ -5,19 +5,12 @@ import '../styles/Main.css';
 export default function Main() {
   return (
     <>
-      <img src={logo} className="Main-logo App-logo" alt="logo" />
       <div className="Main">
-        <h1>House Plants Manager</h1>
-        <p>Automate your house plant management!</p>
-        <button
-          className="Main-button"
-          type="button"
-          onClick={() => {
-            window.location.href = '/Dashboard';
-          }}
-        >
-          Dashboard
-        </button>
+        <img src={logo} className="Main-logo App-logo" alt="logo" />
+        <h1 className="Main-title">House Plants Manager</h1>
+        <p className="Main-description">
+          Modernize your house plant management!
+        </p>
         <div className="Main-info">
           <div className="Main-info-column">
             <h3>Monitoring</h3>
@@ -41,15 +34,18 @@ export default function Main() {
             </p>
           </div>
         </div>
+        <button className="Main-button" type="button">
+          Understood!
+        </button>
+        <footer className="Main-footer">
+          <p>
+            Made by Celarye using{' '}
+            <a className="App-link" href="https://create-react-app.dev/">
+              Create React App
+            </a>
+          </p>
+        </footer>
       </div>
-      <footer>
-        <p>
-          Made by Celarye using{' '}
-          <a className="App-link" href="https://create-react-app.dev/">
-            Create React App
-          </a>
-        </p>
-      </footer>
     </>
   );
 }
