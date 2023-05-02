@@ -18,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://celarye.github.io/syfinalproject/",
   "display": "standalone",
-  "theme_color": "#61dafb",
-  "background_color": "#282c34"
+  "theme_color": "#1987a6",
+  "background_color": "#1a1a1a"
 }
