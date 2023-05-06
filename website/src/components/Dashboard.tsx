@@ -5,7 +5,11 @@ import '../styles/Dashboard.css';
 
 export default function Dashboard() {
   const [isShowing, setIsShowing] = useState(
-    localStorage.getItem('isShowing') === 'true' || false
+    localStorage.getItem('isShowing') === 'false'
+      ? false
+      : localStorage.getItem('isShowing') === 'true'
+      ? true
+      : true
   );
 
   function modalOpen() {
@@ -24,7 +28,7 @@ export default function Dashboard() {
     <>
       <div className={`overlay${isShowing ? 'Show' : ''}`}></div>
       <button className="Dashboard-button" onClick={modalOpen}>
-        Modal
+        Info
       </button>
       {isShowing && <Modal onClose={modalClose} />}
     </>
