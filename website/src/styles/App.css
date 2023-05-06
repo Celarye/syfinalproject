@@ -9,7 +9,9 @@
 body {
   margin: 0;
   padding: 0;
-  display: flex;
+  position: relative;
+  z-index: 1;
+  display: grid;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -17,6 +19,25 @@ body {
   background-color: var(--primaryColor);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 .App-link {

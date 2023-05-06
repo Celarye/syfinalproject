@@ -1,0 +1,99 @@
+.Modal {
+  position: fixed;
+  top: 2.5%;
+  left: 7.5%;
+  width: 85%;
+  height: 95%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primaryColor);
+  overflow-y: auto;
+  border: 1px solid;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.Modal-logo {
+  max-height: 30vh;
+}
+
+.Modal-title {
+  margin: 2vh;
+  margin-top: 0;
+  margin-bottom: 2.5vh;
+}
+
+.Modal-description {
+  margin: 2vh;
+  margin-top: 0;
+  margin-bottom: 5vh;
+  font-size: large;
+}
+
+.Modal-features {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: rgba(255, 255, 255, 0.1);
+  text-align: left;
+  font-size: large;
+}
+
+.Modal-features-column {
+  align-self: stretch;
+  max-width: 30vh;
+  padding: 2.5vh;
+}
+
+.Modal-features-title {
+  padding-bottom: 1vh;
+}
+
+.Modal-features-column2 {
+  margin-left: 10vh;
+  margin-right: 10vh;
+}
+
+.Modal-button {
+  min-height: 5vh;
+  min-width: 15vh;
+  margin-bottom: 5vh;
+  background-color: var(--secondaryColor);
+  border: 0px solid;
+  border-radius: 10px;
+  font-size: large;
+  font-weight: bold;
+  color: var(--textColor);
+}
+
+@media screen and (max-width: 1000px) {
+  .Modal {
+    justify-content: flex-start;
+  }
+  .Modal-logo {
+    max-height: 70vw;
+  }
+  .Modal-title {
+    font-size: 9vw;
+  }
+  .Modal-features {
+    flex-direction: column;
+    text-align: center;
+  }
+  .Modal-features-column {
+    align-self: auto;
+    max-width: 40vh;
+  }
+  .Modal-features-column2 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
