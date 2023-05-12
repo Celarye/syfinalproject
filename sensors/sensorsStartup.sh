@@ -1,2 +1,2 @@
 source ./venv/bin/activate
-python ./src/soil_moisture.py &
+python ./src/wpse342.py &
