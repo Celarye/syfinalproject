@@ -1,26 +1,42 @@
-"""Soil Moisture Sensors"""
+"""Sensors"""
 import time
 import datetime
 import json
 import csv
 import board
-import busio
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
-
-MAX_VAL = [None, None, None]
-MIN_VAL = [None, None, None]
+from adafruit_bme280 import basic as adafruit_bme280
+import adafruit_ccs811
 
 # Create the I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
+i2c = board.I2C()  # uses board.SCL and board.SDA
 
 # Create the ADC object using the I2C bus
-ads = ADS.ADS1015(i2c)
+try:
+    ads = ADS.ADS1015(i2c)
+except Exception as e:
+    print(f"ADS1015 initialization error: {e}")
+
+# Create the BME280 and the CCS811 sensor objects
+try:
+    bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
+except Exception as e:
+    print(f"BME280 initialization error: {e}")
+
+try:
+    ccs811 = adafruit_ccs811.CCS811(i2c, address=0x5B)
+except Exception as e:
+    print(f"CCS811 initialization error: {e}")
 
 # Create single-ended inputs for three sensors (channels 0, 1, and 2)
 channels = [AnalogIn(ads, ADS.P0), AnalogIn(
     ads, ADS.P1), AnalogIn(ads, ADS.P2)]
 
+
+MAX_VAL = [None, None, None]
+MIN_VAL = [None, None, None]
+bme280.sea_level_pressure = 1013.25  # Lochristi's pressure (hPa) at sea level
 
 # Load calibration data from the JSON file if it exists
 CALIBRATION_FILE = 'cap_config.json'
@@ -77,23 +93,35 @@ except FileNotFoundError:
 
 # Continuous reading and writing of moisture values
 today = datetime.date.today().strftime("%d-%m-%y")
-filename = f"../data/soil_moistures_{today}.csv"
+filename = f"../data/sensorData_{today}.csv"
 SAMPLING_INTERVAL = 5  # Interval between readings in seconds
 
 while True:
     try:
-        timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+        TIMESTAMP = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
         with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
-            writer = csv.writer(csvfile)
+            WRITER = csv.writer(csvfile)
 
-            values = [timestamp]
+            header = ["Timestamp"]
+            for i, chan in enumerate(channels):
+                header.extend([f"Sensor {i+1} Value", f"Sensor {i+1} Voltage"])
+            header.extend(["Temperature", "Humidity", "Pressure",
+                          "Altitude", "CO2", "TVOC", "Temp"])
+
+            values = [TIMESTAMP]
             for i, chan in enumerate(channels):
                 values.extend([chan.value, chan.voltage])
+            values.extend([bme280.temperature, bme280.relative_humidity, bme280.pressure,
+                          bme280.altitude, ccs811.eco2, ccs811.tvoc, ccs811.temperature])
 
-            writer.writerow(values)
+            # Check if the file is empty (no header present)
+            is_empty = csvfile.tell() == 0
+            if is_empty:
+                WRITER.writerow(header)
+            WRITER.writerow(values)
 
-        print(f"Moisture values written to {filename} at {timestamp}.")
+        print(f"Sensor values written to {filename} at {TIMESTAMP}.")
         time.sleep(SAMPLING_INTERVAL)
 
     except Exception as error:
