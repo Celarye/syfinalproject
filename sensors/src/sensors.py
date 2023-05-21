@@ -55,20 +55,22 @@ except FileNotFoundError:
         logger.info(f"------{'raw':>5}\t{'v':>5}")
     for x in range(0, 10):
         if channel.value > MAX_VAL:
-            logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
-            time.sleep(0.5)
-            logger.info('\n')
+            MAX_VAL = channel.value
+        logger.info(f"------{channel.value:>5}\t{channel.voltage:>5.3f}")
+        logger.info('\n')
+        time.sleep(30)
 
     water_check = input("Is Capacitive Sensor in Water? (enter 'y' to proceed): ")
     if water_check.lower() == 'y':
         MIN_VAL = channel.value
         logger.info(f"------{'raw':>5}\t{'v':>5}")
+        logger.info(f"------{channel.value:>5}\t{channel.voltage:>5.3f}")
     for x in range(0, 10):
         if channel.value < MIN_VAL:
             MIN_VAL = channel.value
-            logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
-            time.sleep(0.5)
-            logger.info('\n')
+        logger.info(f"------{channel.value:>5}\t{channel.voltage:>5.3f}")
+        logger.info('\n')
+        time.sleep(30)
 
     air_pressure = float(input("Enter the current air pressure (hPa): "))
 
