@@ -55,7 +55,7 @@ except FileNotFoundError:
         logger.info(f"{'raw':>5}\t{'v':>5}")
         logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
-    for x in range(0, 10):
+    for x in range(0, 9):
         if channel.value > MAX_VAL:
             MAX_VAL = channel.value
         logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
@@ -67,7 +67,7 @@ except FileNotFoundError:
         logger.info(f"{'raw':>5}\t{'v':>5}")
         logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
-    for x in range(0, 10):
+    for x in range(0, 9):
         if channel.value < MIN_VAL:
             MIN_VAL = channel.value
         logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
