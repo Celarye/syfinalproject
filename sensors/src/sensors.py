@@ -74,7 +74,7 @@ except FileNotFoundError:
 
 today = datetime.date.today().strftime("%d-%m-%y")
 DIRECTORY = "../website/src/data/"
-filename = f"{DIRECTORY}sensorData_{today}.csv"
+filename = f"{DIRECTORY}sensorsData_{today}.csv"
 SAMPLING_INTERVAL = 5
 
 logger.info("Starting sensors data logging...")
