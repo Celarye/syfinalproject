@@ -72,18 +72,19 @@ except FileNotFoundError:
         json.dump(config_data, outfile)
         logger.info(config_data)
 
-today = datetime.date.today().strftime("%d-%m-%y")
-DIRECTORY = "../website/src/data/"
-filename = f"{DIRECTORY}sensorsData_{today}.csv"
-SAMPLING_INTERVAL = 5
-
 logger.info("Starting sensors data logging...")
-
-os.makedirs(DIRECTORY, exist_ok=True)
 
 while True:
     try:
+        today = datetime.date.today().strftime("%d-%m-%Y")
+        DIRECTORY = "../website/src/data/"
+        filename = f"{DIRECTORY}sensorsData_{today}.csv"
+
+        os.makedirs(DIRECTORY, exist_ok=True)
+
         timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+
+        SAMPLING_INTERVAL = 30
 
         soil_moisture_percentage = (channel.value - WET_SATURATION) / \
                            (DRY_SATURATION - WET_SATURATION) * 100
