@@ -38,7 +38,10 @@ channel = AnalogIn(ads, ADS.P0)
 
 MAX_VAL = None
 MIN_VAL = None
-bme280.sea_level_pressure = 1013.25  # Default pressure (hPa) at sea level
+try:
+    bme280.sea_level_pressure = 1013.25  # Default pressure (hPa) at sea level
+except Exception as e:
+    logger.error(f"BME280 initialization error: {e}")
 
 # Load calibration data from the JSON file if it exists
 CALIBRATION_FILE = 'cap_config.json'
@@ -49,7 +52,7 @@ try:
 
     MIN_VAL = calibration_data['full_saturation']
     MAX_VAL = calibration_data['zero_saturation']
-    pressure = calibration_data['air_pressure']
+    bme280.sea_level_pressure = calibration_data['air_pressure']
 
     logger.info('Calibration data loaded from JSON.')
     logger.info(calibration_data)
@@ -77,13 +80,13 @@ except FileNotFoundError:
             logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
             time.sleep(0.5)
 
-    pressure = float(input("Enter the current air pressure (hPa): "))
+    bme280.sea_level_pressure = float(input("Enter the current air pressure (hPa): "))
 
     # Create a dictionary with calibration data
     config_data = {
         "full_saturation": MIN_VAL,
         "zero_saturation": MAX_VAL,
-        "air_pressure": pressure
+        "air_pressure": bme280.sea_level_pressure
     }
 
     # Save calibration data to a JSON file
