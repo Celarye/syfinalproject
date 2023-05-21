@@ -73,7 +73,7 @@ except FileNotFoundError:
         logger.info(config_data)
 
 today = datetime.date.today().strftime("%d-%m-%y")
-DIRECTORY = "../website/data/"
+DIRECTORY = "../website/src/data/"
 filename = f"{DIRECTORY}sensorData_{today}.csv"
 SAMPLING_INTERVAL = 5
 
@@ -85,18 +85,21 @@ while True:
     try:
         timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
+        soil_moisture_percentage = (channel.value - WET_SATURATION) / \
+                           (DRY_SATURATION - WET_SATURATION) * 100
+
         with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
-            writer = csv.writer(csvfile)
+            WRITER = csv.writer(csvfile)
 
             header = ["Timestamp", "Soil Moisture", "Temperature", "Humidity"]
 
-            values = [timestamp, channel.value, bme280.temperature,
+            values = [timestamp, soil_moisture_percentage, bme280.temperature,
                       bme280.relative_humidity]
 
             is_empty = csvfile.tell() == 0
             if is_empty:
-                writer.writerow(header)
-            writer.writerow(values)
+                WRITER.writerow(header)
+            WRITER.writerow(values)
 
         logger.info("Sensors values written to %s at %s.", filename, timestamp)
         logger.info("Sensors values: %s", values)
