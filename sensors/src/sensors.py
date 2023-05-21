@@ -11,7 +11,7 @@ from adafruit_bme280 import basic as adafruit_bme280
 import adafruit_ccs811
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')  # Updated format
 logger = logging.getLogger(__name__)
 
 # Create the I2C bus
