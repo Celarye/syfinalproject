@@ -52,27 +52,25 @@ except FileNotFoundError:
     baseline_check = input("Is Capacitive Sensor Dry? (enter 'y' to proceed): ")
     if baseline_check.lower() == 'y':
         MAX_VAL = channel.value
-        logger.info(f"{'raw'}\t{'v'}")
-        logger.info(f"{channel.value}\t{channel.voltage}")
+        logger.info(f"{'raw':>5}\t{'v':>5}")
+        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
     for x in range(0, 10):
         if channel.value > MAX_VAL:
             MAX_VAL = channel.value
-        logger.info(f"{channel.value}\t{channel.voltage}")
-        logger.info('\n')
+        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
 
     water_check = input("Is Capacitive Sensor in Water? (enter 'y' to proceed): ")
     if water_check.lower() == 'y':
         MIN_VAL = channel.value
-        logger.info(f"{'raw'}\t{'v'}")
-        logger.info(f"{channel.value}\t{channel.voltage}")
+        logger.info(f"{'raw':>5}\t{'v':>5}")
+        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
     for x in range(0, 10):
         if channel.value < MIN_VAL:
             MIN_VAL = channel.value
-        logger.info(f"{channel.value}\t{channel.voltage}")
-        logger.info('\n')
+        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
         time.sleep(30)
 
     air_pressure = float(input("Enter the current air pressure (hPa): "))
