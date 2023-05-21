@@ -10,112 +10,101 @@ import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')  # Updated format
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
-# Create the I2C bus
-i2c = board.I2C()  # uses board.SCL and board.SDA
+i2c = board.I2C()
 
-# Create the ADC object using the I2C bus
 ads = ADS.ADS1015(i2c)
 
-# Create the BME280 and the CCS811 sensor objects
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 logger.info("BME280 connected.")
 
-# Create a single-ended input for the soil moisture sensor (channel 0)
 channel = AnalogIn(ads, ADS.P0)
 logger.info("Soil moisture sensor connected.")
 
-MAX_VAL = None
-MIN_VAL = None
+DRY_SATURATION = None
+WET_SATURATION = None
 
-# Load calibration data from the JSON file if it exists
 CALIBRATION_FILE = 'config.json'
 
 try:
     with open(CALIBRATION_FILE, 'r', encoding='UTF-8') as file:
         calibration_data = json.load(file)
 
-    MIN_VAL = calibration_data['full_saturation']
-    MAX_VAL = calibration_data['zero_saturation']
+    WET_SATURATION = calibration_data['wet_saturation']
+    DRY_SATURATION = calibration_data['dry_saturation']
 
     logger.info('Calibration data loaded from the config file.')
     logger.info(calibration_data)
 
 except FileNotFoundError:
     logger.info('Calibration file not found. Starting calibration process...')
-    # Calibration for the sensor
-    baseline_check = input("Is Capacitive Sensor Dry? [y]: ")
-    if baseline_check.lower() == 'y':
-        MAX_VAL = channel.value
-        logger.info(f"{'raw':>5}\t{'v':>5}")
-        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
+    dry_check = input("Is Capacitive Sensor Dry? [y]: ")
+    if dry_check.lower() == 'y':
+        DRY_SATURATION = channel.value
+        logger.info("%5s\t%5s", 'raw', 'v')
+        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
     for x in range(0, 9):
         time.sleep(30)
-        if channel.value > MAX_VAL:
-            MAX_VAL = channel.value
-        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
+        if channel.value > DRY_SATURATION:
+            DRY_SATURATION = channel.value
+        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
 
-    water_check = input("Is Capacitive Sensor in Water? [y]: ")
-    if water_check.lower() == 'y':
-        MIN_VAL = channel.value
-        logger.info(f"{'raw':>5}\t{'v':>5}")
-        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
+    wet_check = input("Is Capacitive Sensor in Water? [y]: ")
+    if wet_check.lower() == 'y':
+        WET_SATURATION = channel.value
+        logger.info("%5s\t%5s", 'raw', 'v')
+        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
     for x in range(0, 9):
         time.sleep(30)
-        if channel.value < MIN_VAL:
-            MIN_VAL = channel.value
-        logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
+        if channel.value < WET_SATURATION:
+            WET_SATURATION = channel.value
+        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
 
-    # Create a dictionary with calibration data
     config_data = {
-        "full_saturation": MIN_VAL,
-        "zero_saturation": MAX_VAL
+        "wet_saturation": WET_SATURATION,
+        "dry_saturation": DRY_SATURATION
     }
 
-    # Save calibration data to a JSON file
     logger.info('Saving calibration data to the config file.')
     with open('config.json', 'w', encoding='UTF-8') as outfile:
         json.dump(config_data, outfile)
         logger.info(config_data)
 
-# Continuous reading and writing of moisture values
 today = datetime.date.today().strftime("%d-%m-%y")
-directory = "../website/data/"
-filename = f"{directory}sensorData_{today}.csv"
-SAMPLING_INTERVAL = 5  # Interval between readings in seconds
+DIRECTORY = "../website/data/"
+filename = f"{DIRECTORY}sensorData_{today}.csv"
+SAMPLING_INTERVAL = 5
 
-logger.info("Starting sensor data logging...")
+logger.info("Starting sensors data logging...")
 
-# Create the directory if it doesn't exist
-os.makedirs(directory, exist_ok=True)
+os.makedirs(DIRECTORY, exist_ok=True)
 
 while True:
     try:
-        TIMESTAMP = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+        timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
         with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
-            WRITER = csv.writer(csvfile)
+            writer = csv.writer(csvfile)
 
             header = ["Timestamp", "Soil Moisture", "Temperature", "Humidity"]
 
-            values = [TIMESTAMP, channel.value, bme280.temperature,
+            values = [timestamp, channel.value, bme280.temperature,
                       bme280.relative_humidity]
 
-            # Check if the file is empty (no header present)
             is_empty = csvfile.tell() == 0
             if is_empty:
-                WRITER.writerow(header)
-            WRITER.writerow(values)
+                writer.writerow(header)
+            writer.writerow(values)
 
-        logger.info(f"Sensor values written to {filename} at {TIMESTAMP}.")
-        logger.info(f"Sensor values: {values}")  # Log values in console
+        logger.info("Sensors values written to %s at %s.", filename, timestamp)
+        logger.info("Sensors values: %s", values)
+
         time.sleep(SAMPLING_INTERVAL)
 
-    except Exception as error:
-        logger.error("An error occurred while logging sensor data.", exc_info=True)
+    except IOError as error:
+        logger.error("An error occurred while logging the sensors data.", exc_info=True)
 
     except KeyboardInterrupt:
         logger.info('Exiting script.')
