@@ -30,8 +30,9 @@ try:
 except Exception as e:
     logger.error(f"CCS811 initialization error: {e}")
 
-# Create single-ended inputs for three sensors (channels 0, 1, and 2)
+# Create a single-ended input for the soil moisture sensor (channel 0)
 channel = AnalogIn(ads, ADS.P0)
+logger.info("Soil moisture sensor connected.")
 
 MAX_VAL = None
 MIN_VAL = None

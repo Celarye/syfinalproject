@@ -1,2 +1,2 @@
 source ./venv/bin/activate
-python ./src/sensors.py &
+python ./src/sensors.py
