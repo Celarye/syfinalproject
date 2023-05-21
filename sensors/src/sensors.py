@@ -9,7 +9,6 @@ import board
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
-import adafruit_ccs811
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')  # Updated format
@@ -24,12 +23,6 @@ ads = ADS.ADS1015(i2c)
 # Create the BME280 and the CCS811 sensor objects
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 logger.info("BME280 connected.")
-
-try:
-    ccs811 = adafruit_ccs811.CCS811(i2c, address=0x5B)
-    logger.info("CCS811 connected.")
-except Exception as e:
-    logger.error(f"CCS811 initialization error: {e}")
 
 # Create a single-ended input for the soil moisture sensor (channel 0)
 channel = AnalogIn(ads, ADS.P0)
@@ -75,6 +68,7 @@ except FileNotFoundError:
             MIN_VAL = channel.value
             logger.info(f"{channel.value:>5}\t{channel.voltage:>5.3f}")
             time.sleep(0.5)
+            logger.info('\n')
 
     air_pressure = float(input("Enter the current air pressure (hPa): "))
 
@@ -95,7 +89,7 @@ except FileNotFoundError:
 
 # Continuous reading and writing of moisture values
 today = datetime.date.today().strftime("%d-%m-%y")
-directory = "../data/"
+directory = "../website/data/"
 filename = f"{directory}sensorData_{today}.csv"
 SAMPLING_INTERVAL = 5  # Interval between readings in seconds
 
@@ -112,11 +106,10 @@ while True:
             WRITER = csv.writer(csvfile)
 
             header = ["Timestamp", "Sensor Value", "Sensor Voltage", "Temperature", "Humidity",
-                      "Pressure", "Altitude", "CO2", "TVOC", "Temp"]
+                      "Pressure", "Altitude"]
 
             values = [TIMESTAMP, channel.value, channel.voltage, bme280.temperature,
-                      bme280.relative_humidity, bme280.pressure, bme280.altitude, ccs811.eco2,
-                      ccs811.tvoc, ccs811.temperature]
+                      bme280.relative_humidity, bme280.pressure, bme280.altitude]
 
             # Check if the file is empty (no header present)
             is_empty = csvfile.tell() == 0
