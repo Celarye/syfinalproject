@@ -20,7 +20,7 @@ export default function Dashboard() {
       day: '2-digit',
     });
 
-    const filePath = `/data/sensorsData_${currentDate}.csv`;
+    const filePath = `../data/sensorsData_${currentDate}.csv`;
 
     fetch(filePath)
       .then((response) => response.text())
