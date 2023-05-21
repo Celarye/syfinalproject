@@ -1,4 +1,5 @@
 """Sensors Script"""
+import os
 import time
 import datetime
 import json
@@ -94,10 +95,14 @@ except FileNotFoundError:
 
 # Continuous reading and writing of moisture values
 today = datetime.date.today().strftime("%d-%m-%y")
-filename = f"../data/sensorData_{today}.csv"
+directory = "../data/"
+filename = f"{directory}sensorData_{today}.csv"
 SAMPLING_INTERVAL = 5  # Interval between readings in seconds
 
 logger.info("Starting sensor data logging...")
+
+# Create the directory if it doesn't exist
+os.makedirs(directory, exist_ok=True)
 
 while True:
     try:
