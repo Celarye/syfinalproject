@@ -20,11 +20,13 @@ ads = ADS.ADS1015(i2c)
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 logger.info("BME280 connected.")
 
-channel = AnalogIn(ads, ADS.P0)
-logger.info("Soil moisture sensor connected.")
+channels = [AnalogIn(ads, ADS.P0), AnalogIn(
+    ads, ADS.P1), AnalogIn(ads, ADS.P2)]
+sensor_labels = ["Plant 1", "Plant 2", "Plant 3"]
+logger.info("Soil moisture sensors connected.")
 
-DRY_SATURATION = None
-WET_SATURATION = None
+DRY_SATURATION = [None, None, None]
+WET_SATURATION = [None, None, None]
 
 CALIBRATION_FILE = 'config.json'
 
@@ -32,40 +34,55 @@ try:
     with open(CALIBRATION_FILE, 'r', encoding='UTF-8') as file:
         calibration_data = json.load(file)
 
-    WET_SATURATION = calibration_data['wet_saturation']
-    DRY_SATURATION = calibration_data['dry_saturation']
+    wet_saturation_data = calibration_data.get('wet_saturation')
+    dry_saturation_data = calibration_data.get('dry_saturation')
 
-    logger.info('Calibration data loaded from the config file.')
-    logger.info(calibration_data)
+    if wet_saturation_data and dry_saturation_data:
+        for i in range(len(channels)):
+            WET_SATURATION[i] = wet_saturation_data[i]
+            DRY_SATURATION[i] = dry_saturation_data[i]
+
+        logger.info('Calibration data loaded from the config file.')
+        logger.info(calibration_data)
 
 except FileNotFoundError:
     logger.info('Calibration file not found. Starting calibration process...')
-    dry_check = input("Is Capacitive Sensor Dry? [y]: ")
-    if dry_check.lower() == 'y':
-        DRY_SATURATION = channel.value
-        logger.info("%5s\t%5s", 'raw', 'v')
-        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
-    for x in range(0, 9):
-        time.sleep(30)
-        if channel.value > DRY_SATURATION:
-            DRY_SATURATION = channel.value
-        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
+    for i, channel in enumerate(channels):
+        dry_check = input(
+            f"Is Capacitive Sensor for {sensor_labels[i]} Dry? [y]: ")
+        if dry_check.lower() == 'y':
+            DRY_SATURATION[i] = channel.value
+            logger.info("%5s\t%5s", 'raw', 'v')
+            logger.info("%5d\t%5.3f", channel.value, channel.voltage)
+        for x in range(0, 9):
+            time.sleep(30)
+            if channel.value > DRY_SATURATION[i]:
+                DRY_SATURATION[i] = channel.value
+            logger.info("%5d\t%5.3f", channel.value, channel.voltage)
 
-    wet_check = input("Is Capacitive Sensor in Water? [y]: ")
-    if wet_check.lower() == 'y':
-        WET_SATURATION = channel.value
-        logger.info("%5s\t%5s", 'raw', 'v')
-        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
-    for x in range(0, 9):
-        time.sleep(30)
-        if channel.value < WET_SATURATION:
-            WET_SATURATION = channel.value
-        logger.info("%5d\t%5.3f", channel.value, channel.voltage)
+        wet_check = input(
+            f"Is Capacitive Sensor for {sensor_labels[i]} in Water? [y]: ")
+        if wet_check.lower() == 'y':
+            WET_SATURATION[i] = channel.value
+            logger.info("%5s\t%5s", 'raw', 'v')
+            logger.info("%5d\t%5.3f", channel.value, channel.voltage)
+        for x in range(0, 9):
+            time.sleep(30)
+            if channel.value < WET_SATURATION[i]:
+                WET_SATURATION[i] = channel.value
+            logger.info("%5d\t%5.3f", channel.value, channel.voltage)
 
     config_data = {
-        "wet_saturation": WET_SATURATION,
-        "dry_saturation": DRY_SATURATION
+        "sensors": []
     }
+
+    for i in range(len(channels)):
+        sensor_config = {
+            "label": sensor_labels[i],
+            "wet_saturation": WET_SATURATION[i],
+            "dry_saturation": DRY_SATURATION[i]
+        }
+        config_data["sensors"].append(sensor_config)
 
     logger.info('Saving calibration data to the config file.')
     with open('config.json', 'w', encoding='UTF-8') as outfile:
@@ -86,16 +103,20 @@ while True:
 
         SAMPLING_INTERVAL = 30
 
-        soil_moisture_percentage = (channel.value - WET_SATURATION) / \
-                           (DRY_SATURATION - WET_SATURATION) * 100
+        sensor_readings = []
+        for i, channel in enumerate(channels):
+            soil_moisture_percentage = (
+                channel.value - WET_SATURATION[i]) / (DRY_SATURATION[i] - WET_SATURATION[i]) * 100
+            sensor_readings.append(soil_moisture_percentage)
 
         with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
             WRITER = csv.writer(csvfile)
 
-            header = ["Timestamp", "Soil Moisture", "Temperature", "Humidity"]
+            header = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
+                "Temperature", "Humidity"]
 
-            values = [timestamp, soil_moisture_percentage, bme280.temperature,
-                      bme280.relative_humidity]
+            values = [timestamp] + sensor_readings + \
+                [bme280.temperature, bme280.relative_humidity]
 
             is_empty = csvfile.tell() == 0
             if is_empty:
@@ -108,7 +129,8 @@ while True:
         time.sleep(SAMPLING_INTERVAL)
 
     except IOError as error:
-        logger.error("An error occurred while logging the sensors data.", exc_info=True)
+        logger.error(
+            "An error occurred while logging the sensors data.", exc_info=True)
 
     except KeyboardInterrupt:
         logger.info('Exiting script.')
