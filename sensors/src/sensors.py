@@ -6,13 +6,16 @@ import json
 import csv
 import logging
 import board
+from flask import Flask, send_file
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
-from flask import Flask, send_file
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
+
+NUM_TRACKED_PLANTS = None
+CALIBRATION_FILE = 'config.json'
 
 i2c = board.I2C()
 
@@ -20,10 +23,6 @@ ads = ADS.ADS1015(i2c)
 
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 logger.info("BME280 connected.")
-
-NUM_TRACKED_PLANTS = None
-
-CALIBRATION_FILE = 'config.json'
 
 if not os.path.isfile(CALIBRATION_FILE):
     num_tracked_plants = input("Enter the number of tracked plants (1-3): ")
@@ -119,11 +118,12 @@ logger.info("Starting sensors data logging...")
 
 app = Flask(__name__)
 
+today = datetime.date.today().strftime("%d-%m-%Y")
 
-@app.route('/data/sensorsData_<date>.csv')
+
+@app.route(f'/data/sensorsData_{today}.csv')
 def serve_csv():
     """Serves the CSV using Flask"""
-    today = datetime.date.today().strftime("%d-%m-%Y")
     directory = "../data"
     filename = f"{directory}/sensorsData_{today}.csv"
 
@@ -171,4 +171,6 @@ def serve_csv():
 
 
 if __name__ == '__main__':
-    app.run()
+    while True:
+        app.run()
+        time.sleep(60)
