@@ -9,6 +9,7 @@ import board
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
+from flask import Flask, send_file
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
@@ -74,42 +75,45 @@ except FileNotFoundError:
 
 logger.info("Starting sensors data logging...")
 
-while True:
-    try:
-        today = datetime.date.today().strftime("%d-%m-%Y")
-        DIRECTORY = "../website/src/data/"
-        filename = f"{DIRECTORY}sensorsData_{today}.csv"
+app = Flask(__name__)
 
-        os.makedirs(DIRECTORY, exist_ok=True)
 
-        timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+@app.route('/data/sensorsData_<date>.csv')
+def serve_csv():
+    """Serves the CSV using Flask"""
+    today = datetime.date.today().strftime("%d-%m-%Y")
+    directory = "../data"
+    filename = f"{directory}/sensorsData_{today}.csv"
 
-        SAMPLING_INTERVAL = 30
+    os.makedirs(directory, exist_ok=True)
 
-        soil_moisture_percentage = (channel.value - WET_SATURATION) / \
-                           (DRY_SATURATION - WET_SATURATION) * 100
+    timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
-        with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
-            WRITER = csv.writer(csvfile)
+    sampling_interval = 30
 
-            header = ["Timestamp", "Soil Moisture", "Temperature", "Humidity"]
+    soil_moisture_percentage = (
+        channel.value - WET_SATURATION) / (DRY_SATURATION - WET_SATURATION) * 100
 
-            values = [timestamp, soil_moisture_percentage, bme280.temperature,
-                      bme280.relative_humidity]
+    with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
+        writer = csv.writer(csvfile)
 
-            is_empty = csvfile.tell() == 0
-            if is_empty:
-                WRITER.writerow(header)
-            WRITER.writerow(values)
+        header = ["Timestamp", "Soil Moisture", "Temperature", "Humidity"]
 
-        logger.info("Sensors values written to %s at %s.", filename, timestamp)
-        logger.info("Sensors values: %s", values)
+        values = [timestamp, soil_moisture_percentage,
+                  bme280.temperature, bme280.relative_humidity]
 
-        time.sleep(SAMPLING_INTERVAL)
+        is_empty = csvfile.tell() == 0
+        if is_empty:
+            writer.writerow(header)
+        writer.writerow(values)
 
-    except IOError as error:
-        logger.error("An error occurred while logging the sensors data.", exc_info=True)
+    logger.info("Sensors values written to %s at %s.", filename, timestamp)
+    logger.info("Sensors values: %s", values)
 
-    except KeyboardInterrupt:
-        logger.info('Exiting script.')
-        break
+    time.sleep(sampling_interval)
+
+    return send_file(filename, as_attachment=True, attachment_filename=f'sensorsData_{today}.csv')
+
+
+if __name__ == '__main__':
+    app.run()
