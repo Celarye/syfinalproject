@@ -46,7 +46,7 @@ export default function Dashboard() {
       const currentDate = new Date();
       const formattedDate = formatDate(currentDate);
 
-      const filePath = `https://localhost:5000/data/sensorsData_${formattedDate}.csv`;
+      const filePath = `http://localhost:5000/data/sensorsData_${formattedDate}.csv`;
       const response = await fetch(filePath);
       const reader = response.body?.getReader();
       const result = await reader?.read(); // raw array
