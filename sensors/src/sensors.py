@@ -5,6 +5,7 @@ import datetime
 import json
 import csv
 import logging
+from threading import Thread
 import board
 from flask import Flask
 import adafruit_ads1x15.ads1015 as ADS
@@ -102,7 +103,8 @@ def index():
 
 logger.info("Starting Flask app...")
 
-app.run()
+flask_thread = Thread(target=app.run)
+flask_thread.start()
 
 logger.info("Starting sensors data logging...")
 
