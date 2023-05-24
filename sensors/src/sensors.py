@@ -16,6 +16,9 @@ from adafruit_bme280 import basic as adafruit_bme280
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
+app = Flask(__name__)
+CORS(app)
+
 i2c = board.I2C()
 
 ads = ADS.ADS1015(i2c)
@@ -91,68 +94,66 @@ except FileNotFoundError:
         json.dump(config_data, outfile)
         logger.info(config_data)
 
-values = ""
-
-app = Flask(__name__)
-CORS(app)
-
-
-@app.route('/')
-def index():
-    """Flask index"""
-    return str(values)
-
 
 logger.info("Starting Flask app...")
 
-flask_thread = Thread(target=app.run)
-flask_thread.start()
+try:
+    @app.route('/')
+    def index():
+        """Flask index"""
+        return str(values)
 
-logger.info("Starting sensors data logging...")
+    flask_thread = Thread(target=app.run)
+    flask_thread.start()
 
-while True:
-    try:
-        today = datetime.date.today().strftime("%d-%m-%Y")
-        DIRECTORY = "../data/"
-        filename = f"{DIRECTORY}sensorsData_{today}.csv"
+    logger.info("Starting sensors data logging...")
 
-        os.makedirs(DIRECTORY, exist_ok=True)
+    while True:
+        try:
+            today = datetime.date.today().strftime("%d-%m-%Y")
+            DIRECTORY = "../data/"
+            filename = f"{DIRECTORY}sensorsData_{today}.csv"
 
-        timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
+            os.makedirs(DIRECTORY, exist_ok=True)
 
-        SAMPLING_INTERVAL = 30
+            timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
-        sensor_readings = []
-        for i, channel in enumerate(channels):
-            soil_moisture_percentage = (
-                channel.value - WET_SATURATION[i]) / (DRY_SATURATION[i]
-                                                      - WET_SATURATION[i]) * 100
-            sensor_readings.append(soil_moisture_percentage)
+            SAMPLING_INTERVAL = 30
 
-        with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
-            writer = csv.writer(csvfile)
+            sensor_readings = []
+            for i, channel in enumerate(channels):
+                soil_moisture_percentage = (
+                    channel.value - WET_SATURATION[i]) / (DRY_SATURATION[i]
+                                                          - WET_SATURATION[i]) * 100
+                sensor_readings.append(soil_moisture_percentage)
 
-            header = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
-                "Temperature", "Humidity"]
+            with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
+                writer = csv.writer(csvfile)
 
-            values = [timestamp] + sensor_readings + \
-                [bme280.temperature, bme280.relative_humidity]
+                header = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
+                    "Temperature", "Humidity"]
 
-            is_empty = csvfile.tell() == 0
-            if is_empty:
-                writer.writerow(header)
-            writer.writerow(values)
+                values = [timestamp] + sensor_readings + \
+                    [bme280.temperature, bme280.relative_humidity]
 
-        logger.info("Sensors values written to %s at %s.",
-                    filename, timestamp)
-        logger.info("Sensors values: %s", values)
+                is_empty = csvfile.tell() == 0
+                if is_empty:
+                    writer.writerow(header)
+                writer.writerow(values)
 
-        time.sleep(SAMPLING_INTERVAL)
+            logger.info("Sensors values written to %s at %s.",
+                        filename, timestamp)
+            logger.info("Sensors values: %s", values)
 
-    except IOError:
-        logger.error(
-            "An error occurred while logging the sensors data.", exc_info=True)
+            time.sleep(SAMPLING_INTERVAL)
 
-    except KeyboardInterrupt:
-        logger.info('Exiting script.')
-        break
+        except IOError:
+            logger.error(
+                "An error occurred while logging the sensors data.", exc_info=True)
+
+        except KeyboardInterrupt:
+            logger.info('Exiting sensor Data logging.')
+            break
+
+except KeyboardInterrupt:
+    logger.info('Stopping Flask app and exiting script.')
