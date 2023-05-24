@@ -49,7 +49,7 @@ export default function Dashboard() {
       <img src={logo} className="dashboard-logo App-logo" alt="logo" />
       <div>
         {!data ? (
-          <div>Loading...</div>
+          <div>No Data Fetched Yet...</div>
         ) : (
           <>
             <table>
