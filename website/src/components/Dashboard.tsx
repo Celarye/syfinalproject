@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../includes/logo.png';
 import '../styles/Dashboard.css';
 
@@ -34,6 +34,7 @@ export default function Dashboard() {
         Temperature: temperature,
         Humidity: humidity,
       });
+      console.log('Data fetched');
     };
 
     fetchData();
