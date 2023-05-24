@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../includes/logo.png';
-import Papa from 'papaparse';
 import '../styles/Dashboard.css';
 
 interface SensorData {
@@ -11,77 +10,37 @@ interface SensorData {
 }
 
 export default function Dashboard() {
-  const [csvData, setCsvData] = useState<SensorData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const findLastNonEmptyLineIndex = useCallback(
-    (data: SensorData[]): number => {
-      let lastIndex = data.length - 1;
-      while (
-        lastIndex >= 0 &&
-        Object.values(data[lastIndex]).every(
-          (value) => typeof value === 'string' && !value.trim()
-        )
-      ) {
-        lastIndex--;
-      }
-      return lastIndex;
-    },
-    []
-  );
+  const [data, setData] = useState<SensorData | null>(null);
 
   useEffect(() => {
-    const formatDate = (date: Date): string => {
-      const day = padNumber(date.getDate());
-      const month = padNumber(date.getMonth() + 1);
-      const year = date.getFullYear();
-      return `${day}-${month}-${year}`;
-    };
-
-    const padNumber = (num: number): string => {
-      return num.toString().padStart(2, '0');
-    };
-
     const fetchData = async () => {
-      const currentDate = new Date();
-      const formattedDate = formatDate(currentDate);
-
-      const filePath = `http://localhost:5000/data/sensorsData_${formattedDate}.csv`;
-      const response = await fetch(filePath);
-      const reader = response.body?.getReader();
-      const result = await reader?.read(); // raw array
-      const decoder = new TextDecoder('utf-8');
-      const csv = decoder.decode(result?.value); // the csv text
-      const parsedData: SensorData[] = Papa.parse(csv, { header: true })
-        .data as SensorData[];
-      const lastNonEmptyLineIndex = findLastNonEmptyLineIndex(parsedData);
-      console.log(parsedData);
-
-      if (lastNonEmptyLineIndex !== -1) {
-        const lastItem = parsedData[lastNonEmptyLineIndex];
-        setCsvData(lastItem as SensorData);
-      } else {
-        setCsvData(null);
-      }
-
-      setLoading(false);
+      const response = await fetch('http://localhost:5000/');
+      const stringValue = await response.text();
+      const [timestamp, soilMoisture, temperature, humidity] =
+        stringValue.split(',');
+      setData({
+        Timestamp: timestamp,
+        'Soil Moisture': soilMoisture,
+        Temperature: temperature,
+        Humidity: humidity,
+      });
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 60000);
+    const interval = setInterval(fetchData, 30000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [findLastNonEmptyLineIndex]);
+  }, []);
 
   return (
     <div className="dashboard">
       <img src={logo} className="dashboard-logo App-logo" alt="logo" />
       <div>
-        {loading ? (
+        {!data ? (
           <div>Loading...</div>
-        ) : csvData ? (
+        ) : (
           <>
             <table>
               <thead>
@@ -93,18 +52,16 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{csvData.Temperature}</td>
-                  <td>{csvData['Soil Moisture']}</td>
-                  <td>{csvData.Humidity}</td>
+                  <td>{data.Temperature}</td>
+                  <td>{data['Soil Moisture']}</td>
+                  <td>{data.Humidity}</td>
                 </tr>
               </tbody>
             </table>
             <p className="dashboard-fetch-date">
-              <i>Last Fetched: {csvData.Timestamp}</i>
+              <i>Last Fetched: {data.Timestamp}</i>
             </p>
           </>
-        ) : (
-          <div>No data fetched or available</div>
         )}
       </div>
     </div>

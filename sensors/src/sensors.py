@@ -6,6 +6,7 @@ import json
 import csv
 import logging
 import board
+from flask import Flask
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
@@ -87,6 +88,21 @@ except FileNotFoundError:
     with open('config.json', 'w', encoding='UTF-8') as outfile:
         json.dump(config_data, outfile)
         logger.info(config_data)
+
+values = ""
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def index():
+    """Flask index"""
+    return str(values)
+
+
+logger.info("Starting Flask app...")
+
+app.run()
 
 logger.info("Starting sensors data logging...")
 
