@@ -27,12 +27,14 @@ export default function Dashboard() {
         humidity,
       ] = stringValue.split(',');
       setData({
-        Timestamp: timestamp.replace(/[\[\]']+/g, ''),
-        'Soil Moisture 1': soilMoisture1,
-        'Soil Moisture 2': soilMoisture2,
-        'Soil Moisture 3': soilMoisture3,
-        Temperature: temperature,
-        Humidity: humidity,
+        Timestamp: timestamp.replace(/[[]+/g, ''),
+        'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(3),
+        'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(3),
+        'Soil Moisture 3': parseFloat(
+          soilMoisture3.replace(/[\]]+/g, '')
+        ).toFixed(3),
+        Temperature: parseFloat(temperature).toFixed(3),
+        Humidity: parseFloat(humidity).toFixed(3),
       });
       console.log('Data fetched');
     };
