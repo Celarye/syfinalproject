@@ -1,1 +1,19 @@
-{"wet_saturation": 8400, "dry_saturation": 20480}
+{
+  "sensors": [
+    {
+      "label": "Plant 1",
+      "wet_saturation": 8400,
+      "dry_saturation": 20480
+    },
+    {
+      "label": "Plant 2",
+      "wet_saturation": 8400,
+      "dry_saturation": 20480
+    },
+    {
+      "label": "Plant 3",
+      "wet_saturation": 8400,
+      "dry_saturation": 20480
+    }
+  ]
+}
