@@ -8,6 +8,7 @@ import logging
 from threading import Thread
 import board
 from flask import Flask
+from flask_cors import CORS
 import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
@@ -93,6 +94,7 @@ except FileNotFoundError:
 values = ""
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/')
