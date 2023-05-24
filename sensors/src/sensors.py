@@ -34,13 +34,12 @@ try:
     with open(CALIBRATION_FILE, 'r', encoding='UTF-8') as file:
         calibration_data = json.load(file)
 
-    wet_saturation_data = calibration_data.get('wet_saturation')
-    dry_saturation_data = calibration_data.get('dry_saturation')
+    sensors_data = calibration_data.get('sensors')
 
-    if wet_saturation_data and dry_saturation_data:
-        for i in range(len(channels)):
-            WET_SATURATION[i] = wet_saturation_data[i]
-            DRY_SATURATION[i] = dry_saturation_data[i]
+    if sensors_data:
+        for i, sensor_data in enumerate(sensors_data):
+            WET_SATURATION[i] = sensor_data.get('wet_saturation')
+            DRY_SATURATION[i] = sensor_data.get('dry_saturation')
 
         logger.info('Calibration data loaded from the config file.')
         logger.info(calibration_data)
