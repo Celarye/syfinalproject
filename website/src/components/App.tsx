@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import Dashboard from './Dashboard';
+import Data from './Data';
 import Modal from './Modal';
+import logo from '../includes/logo.png';
 import '../styles/App.css';
 
 export type ModalProps = {
@@ -33,8 +33,22 @@ export default function App() {
 
   return (
     <>
-      <Navbar onOpen={modalOpen} />
-      <Dashboard />
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="App-title">House Plants Manager</h1>
+      <button className="App-button" onClick={modalOpen}>
+        Info
+      </button>
+      <Data />
+      <footer>
+        Made by{' '}
+        <a className="App-link" href="https://github.com/Celarye">
+          Celarye
+        </a>{' '}
+        using{' '}
+        <a className="App-link" href="https://create-react-app.dev/">
+          Create React App
+        </a>
+      </footer>
       {isShowing && <Modal onClose={modalClose} isShowing={isShowing} />}
     </>
   );

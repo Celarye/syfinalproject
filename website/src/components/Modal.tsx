@@ -39,7 +39,7 @@ export default function Modal(props: ModalProps) {
             </p>
           </div>
         </div>
-        <button className="Modal-button" type="button" onClick={modalClose}>
+        <button className="App-button" type="button" onClick={modalClose}>
           Understood!
         </button>
       </div>

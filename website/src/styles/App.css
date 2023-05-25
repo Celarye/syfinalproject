@@ -11,11 +11,12 @@ body {
   padding: 0;
   position: relative;
   z-index: 1;
-  display: grid;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  height: 100vh;
   background-color: var(--primaryColor);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
@@ -38,6 +39,27 @@ p {
 
 button:hover {
   cursor: pointer;
+}
+
+.App-logo {
+  max-height: 30vh;
+  margin-bottom: 3vh;
+}
+
+.App-title {
+  margin-bottom: 3vh;
+}
+
+.App-button {
+  min-height: 5vh;
+  min-width: 15vh;
+  margin-bottom: 3vh;
+  background-color: var(--secondaryColor);
+  border: 0px solid;
+  border-radius: 10px;
+  font-size: large;
+  font-weight: bold;
+  color: var(--textColor);
 }
 
 .App-link {
