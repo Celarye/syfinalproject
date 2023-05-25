@@ -39,6 +39,21 @@ export default function Modal(props: ModalProps) {
             </p>
           </div>
         </div>
+        <div className="Modal-usage">
+          <h3 className="Modal-features-title">App Usage</h3>
+          <p>
+            This app needs to be run on the same device on which you run the
+            sensors script. To do this, clone the repository{' '}
+            <code className="Modal-code-block">
+              https://github.com/Celarye/syfinalproject
+            </code>{' '}
+            and in the main directory, run{' '}
+            <code className="Modal-code-block">
+              bash ./sensors/sensorsStartup.sh
+            </code>
+            .
+          </p>
+        </div>
         <button className="App-button" type="button" onClick={modalClose}>
           Understood!
         </button>

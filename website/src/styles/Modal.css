@@ -63,6 +63,27 @@
   margin-right: 10vh;
 }
 
+.Modal-usage {
+  align-items: center;
+  margin-bottom: 5vh;
+  padding: 2.5vh;
+  margin-left: 2vh;
+  margin-right: 2vh;
+  border-bottom: 1px solid;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-size: large;
+}
+
+.Modal-code-block {
+  background-color: #2d2d2d;
+  color: var(--textColor);
+  padding: 2px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  word-break: break-all;
+  border-radius: 4px;
+  margin: 0;
+}
+
 .overlay {
   display: none;
 }
