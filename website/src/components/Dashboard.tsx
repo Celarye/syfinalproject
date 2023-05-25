@@ -64,8 +64,8 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{data.Temperature}</td>
-                  <td>{data.Humidity}</td>
+                  <td>{data.Temperature}°C</td>
+                  <td>{data.Humidity}%</td>
                 </tr>
               </tbody>
             </table>
@@ -79,9 +79,9 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{data['Soil Moisture 1']}</td>
-                  <td>{data['Soil Moisture 2']}</td>
-                  <td>{data['Soil Moisture 3']}</td>
+                  <td>{data['Soil Moisture 1']}%</td>
+                  <td>{data['Soil Moisture 2']}%</td>
+                  <td>{data['Soil Moisture 3']}%</td>
                 </tr>
               </tbody>
             </table>
