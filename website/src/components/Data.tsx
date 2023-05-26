@@ -29,7 +29,7 @@ export default function Data() {
       console.log(fetchedTimestamp);
 
       setData({
-        Timestamp: fetchedTimestamp.replace(/[[']/g, ''),
+        Timestamp: fetchedTimestamp.replace(/\['/g, ''),
         'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
         'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
         'Soil Moisture 3': parseFloat(
@@ -38,9 +38,9 @@ export default function Data() {
         Temperature: parseFloat(temperature).toFixed(2),
         Humidity: parseFloat(humidity).toFixed(2),
       });
-
       console.log('Data fetched');
     };
+    console.log(data?.Timestamp);
 
     const timestampValue = new Date(data?.Timestamp ?? '');
     console.log(timestampValue);
