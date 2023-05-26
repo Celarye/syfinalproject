@@ -39,22 +39,7 @@ export default function Data() {
       });
       console.log('Data fetched');
     };
-    console.log(data?.Timestamp);
 
-    const timestampValue = new Date(data?.Timestamp ?? '');
-    console.log(timestampValue);
-    const currentTime = new Date();
-
-    if (!isNaN(timestampValue.getTime())) {
-      const newTimeDifference =
-        currentTime.getTime() - timestampValue.getTime();
-      setTimeDifference(newTimeDifference);
-    } else {
-      console.log('Invalid timestamp');
-      setTimeDifference(null);
-    }
-
-    fetchData();
     const interval = setInterval(fetchData, 30000);
 
     return () => {
@@ -64,7 +49,9 @@ export default function Data() {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      console.log(data?.Timestamp);
       const timestampValue = new Date(data?.Timestamp ?? '');
+      console.log(timestampValue);
       const currentTime = new Date();
 
       if (!isNaN(timestampValue.getTime())) {
@@ -86,7 +73,7 @@ export default function Data() {
     if (typeof ms === 'number' && !isNaN(ms)) {
       const minutes = Math.floor(ms / (1000 * 60));
       const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-      return `${minutes} minutes ${seconds} seconds`;
+      return `${minutes} minutes ${seconds} seconds ago`;
     } else {
       console.log('Invalid time difference');
       return data?.Timestamp ?? 'Invalid timestamp';
@@ -131,7 +118,7 @@ export default function Data() {
             </tbody>
           </table>
           <p>
-            <i>Last Fetched: {formatTimeDifference(timeDifference)} ago</i>
+            <i>Last Fetched: {formatTimeDifference(timeDifference)}</i>
           </p>
         </>
       )}
