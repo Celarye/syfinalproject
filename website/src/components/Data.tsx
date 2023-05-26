@@ -13,7 +13,6 @@ interface SensorData {
 export default function Data() {
   const [data, setData] = useState<SensorData | null>(null);
   const [timeDifference, setTimeDifference] = useState<number | null>(null);
-  const [timestamp, setTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,10 +26,10 @@ export default function Data() {
         temperature,
         humidity,
       ] = stringValue.split(',');
-
-      setTimestamp(fetchedTimestamp.replace(/[[']+/g, ''));
+      console.log(fetchedTimestamp);
 
       const timestampValue = new Date(fetchedTimestamp.replace(/[[']+/g, ''));
+      console.log(timestampValue);
       const currentTime = new Date();
 
       if (!isNaN(timestampValue.getTime())) {
@@ -66,7 +65,9 @@ export default function Data() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const timestampValue = new Date(timestamp?.replace(/[[']+/g, '') ?? '');
+      const timestampValue = new Date(
+        data?.Timestamp.replace(/[[']+/g, '') ?? ''
+      );
       const currentTime = new Date();
 
       if (!isNaN(timestampValue.getTime())) {
@@ -82,7 +83,7 @@ export default function Data() {
     return () => {
       clearInterval(interval);
     };
-  }, [timestamp]);
+  }, [data?.Timestamp]);
 
   const formatTimeDifference = (ms: number | null): string | undefined => {
     if (typeof ms === 'number' && !isNaN(ms)) {
@@ -91,7 +92,7 @@ export default function Data() {
       return `${minutes} minutes ${seconds} seconds`;
     } else {
       console.log('Invalid time difference');
-      return timestamp ?? 'Invalid timestamp';
+      return data?.Timestamp ?? 'Invalid timestamp';
     }
   };
 
