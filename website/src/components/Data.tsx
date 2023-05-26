@@ -52,9 +52,7 @@ export default function Data() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log(data?.Timestamp);
       const timestampValue = new Date(data?.Timestamp ?? '');
-      console.log(timestampValue);
       const currentTime = new Date();
 
       if (!isNaN(timestampValue.getTime())) {
