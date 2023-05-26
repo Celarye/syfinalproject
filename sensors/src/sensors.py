@@ -118,7 +118,7 @@ try:
 
             timestamp = time.strftime("%d-%m-%Y %H:%M:%S", time.localtime())
 
-            SAMPLING_INTERVAL = 30
+            SAMPLING_INTERVAL = 600
 
             sensor_readings = []
             for i, channel in enumerate(channels):

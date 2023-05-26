@@ -43,7 +43,7 @@ export default function Data() {
       console.log('Data fetched');
     };
 
-    const interval = setInterval(fetchData, 30000);
+    const interval = setInterval(fetchData, 600000);
 
     return () => {
       clearInterval(interval);
@@ -75,8 +75,7 @@ export default function Data() {
   const formatTimeDifference = (ms: number | null): string | undefined => {
     if (typeof ms === 'number' && !isNaN(ms)) {
       const minutes = Math.floor(ms / (1000 * 60));
-      const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-      return `${minutes} minutes ${seconds} seconds ago`;
+      return `${minutes} minute(s) ago`;
     } else {
       console.log('Invalid time difference');
       return data?.Timestamp ?? 'Invalid timestamp';
