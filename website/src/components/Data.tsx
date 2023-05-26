@@ -32,8 +32,15 @@ export default function Data() {
 
       const timestampValue = new Date(fetchedTimestamp.replace(/[[']+/g, ''));
       const currentTime = new Date();
-      const newTimeDifference =
-        currentTime.getTime() - timestampValue.getTime();
+
+      if (!isNaN(timestampValue.getTime())) {
+        const newTimeDifference =
+          currentTime.getTime() - timestampValue.getTime();
+        setTimeDifference(newTimeDifference);
+      } else {
+        console.log('Invalid timestamp');
+        setTimeDifference(null);
+      }
 
       setData({
         Timestamp: fetchedTimestamp.replace(/[[']+/g, ''),
@@ -45,8 +52,6 @@ export default function Data() {
         Temperature: parseFloat(temperature).toFixed(2),
         Humidity: parseFloat(humidity).toFixed(2),
       });
-
-      setTimeDifference(newTimeDifference);
 
       console.log('Data fetched');
     };
@@ -63,9 +68,15 @@ export default function Data() {
     const interval = setInterval(() => {
       const timestampValue = new Date(timestamp?.replace(/[[']+/g, '') ?? '');
       const currentTime = new Date();
-      const newTimeDifference =
-        currentTime.getTime() - timestampValue.getTime();
-      setTimeDifference(newTimeDifference);
+
+      if (!isNaN(timestampValue.getTime())) {
+        const newTimeDifference =
+          currentTime.getTime() - timestampValue.getTime();
+        setTimeDifference(newTimeDifference);
+      } else {
+        console.log('Invalid timestamp');
+        setTimeDifference(null);
+      }
     }, 1000);
 
     return () => {
