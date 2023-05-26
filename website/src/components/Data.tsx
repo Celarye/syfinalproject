@@ -18,6 +18,7 @@ export default function Data() {
     const fetchData = async () => {
       const response = await fetch('http://localhost:5000/');
       const stringValue = await response.text();
+      const cleanStringValue = stringValue.replace(/\['|'/g, '');
       const [
         fetchedTimestamp,
         soilMoisture1,
@@ -25,16 +26,14 @@ export default function Data() {
         soilMoisture3,
         temperature,
         humidity,
-      ] = stringValue.split(',');
+      ] = cleanStringValue.split(',');
       console.log(fetchedTimestamp);
 
       setData({
-        Timestamp: fetchedTimestamp.replace(/\['/g, ''),
+        Timestamp: fetchedTimestamp,
         'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
         'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
-        'Soil Moisture 3': parseFloat(
-          soilMoisture3.replace(/[\]]+/g, '')
-        ).toFixed(3),
+        'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
         Temperature: parseFloat(temperature).toFixed(2),
         Humidity: parseFloat(humidity).toFixed(2),
       });
