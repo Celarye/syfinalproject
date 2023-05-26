@@ -28,21 +28,8 @@ export default function Data() {
       ] = stringValue.split(',');
       console.log(fetchedTimestamp);
 
-      const timestampValue = new Date(fetchedTimestamp.replace(/[[']+/g, ''));
-      console.log(timestampValue);
-      const currentTime = new Date();
-
-      if (!isNaN(timestampValue.getTime())) {
-        const newTimeDifference =
-          currentTime.getTime() - timestampValue.getTime();
-        setTimeDifference(newTimeDifference);
-      } else {
-        console.log('Invalid timestamp');
-        setTimeDifference(null);
-      }
-
       setData({
-        Timestamp: fetchedTimestamp.replace(/[[']+/g, ''),
+        Timestamp: fetchedTimestamp.replace(/[[']/g, ''),
         'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
         'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
         'Soil Moisture 3': parseFloat(
@@ -55,19 +42,30 @@ export default function Data() {
       console.log('Data fetched');
     };
 
+    const timestampValue = new Date(data?.Timestamp ?? '');
+    console.log(timestampValue);
+    const currentTime = new Date();
+
+    if (!isNaN(timestampValue.getTime())) {
+      const newTimeDifference =
+        currentTime.getTime() - timestampValue.getTime();
+      setTimeDifference(newTimeDifference);
+    } else {
+      console.log('Invalid timestamp');
+      setTimeDifference(null);
+    }
+
     fetchData();
     const interval = setInterval(fetchData, 30000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [data?.Timestamp]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const timestampValue = new Date(
-        data?.Timestamp.replace(/[[']+/g, '') ?? ''
-      );
+      const timestampValue = new Date(data?.Timestamp ?? '');
       const currentTime = new Date();
 
       if (!isNaN(timestampValue.getTime())) {
