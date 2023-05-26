@@ -30,7 +30,10 @@ export default function Data() {
       console.log(fetchedTimestamp);
 
       setData({
-        Timestamp: fetchedTimestamp,
+        Timestamp: fetchedTimestamp.replace(
+          /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+          '$3-$2-$1T$4:$5:$6'
+        ),
         'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
         'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
         'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
