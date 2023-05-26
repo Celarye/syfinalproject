@@ -74,7 +74,7 @@ export default function Data() {
   }, [timestamp]);
 
   const formatTimeDifference = (ms: number | null): string | undefined => {
-    if (typeof ms === 'number') {
+    if (typeof ms === 'number' && !isNaN(ms)) {
       const minutes = Math.floor(ms / (1000 * 60));
       const seconds = Math.floor((ms % (1000 * 60)) / 1000);
       return `${minutes} minutes ${seconds} seconds`;
@@ -122,7 +122,7 @@ export default function Data() {
             </tbody>
           </table>
           <p>
-            <i>Last Fetched: {formatTimeDifference(timeDifference)} m</i>
+            <i>Last Fetched: {formatTimeDifference(timeDifference)} ago</i>
           </p>
         </>
       )}
