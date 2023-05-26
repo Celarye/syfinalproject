@@ -74,7 +74,7 @@ export default function Data() {
   }, [timestamp]);
 
   const formatTimeDifference = (ms: number | null): string | undefined => {
-    if (ms !== null) {
+    if (typeof ms === 'number') {
       const minutes = Math.floor(ms / (1000 * 60));
       const seconds = Math.floor((ms % (1000 * 60)) / 1000);
       return `${minutes} minutes ${seconds} seconds`;
