@@ -12,21 +12,31 @@ interface SensorData {
 
 export default function Data() {
   const [data, setData] = useState<SensorData | null>(null);
+  const [timeDifference, setTimeDifference] = useState<number | null>(null);
+  const [timestamp, setTimestamp] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch('http://localhost:5000/');
       const stringValue = await response.text();
       const [
-        timestamp,
+        fetchedTimestamp,
         soilMoisture1,
         soilMoisture2,
         soilMoisture3,
         temperature,
         humidity,
       ] = stringValue.split(',');
+
+      setTimestamp(fetchedTimestamp.replace(/[[']+/g, ''));
+
+      const timestampValue = new Date(fetchedTimestamp.replace(/[[']+/g, ''));
+      const currentTime = new Date();
+      const newTimeDifference =
+        currentTime.getTime() - timestampValue.getTime();
+
       setData({
-        Timestamp: timestamp.replace(/[[]+/g, ''),
+        Timestamp: fetchedTimestamp.replace(/[[']+/g, ''),
         'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
         'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
         'Soil Moisture 3': parseFloat(
@@ -35,6 +45,9 @@ export default function Data() {
         Temperature: parseFloat(temperature).toFixed(2),
         Humidity: parseFloat(humidity).toFixed(2),
       });
+
+      setTimeDifference(newTimeDifference);
+
       console.log('Data fetched');
     };
 
@@ -45,6 +58,31 @@ export default function Data() {
       clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const timestampValue = new Date(timestamp?.replace(/[[']+/g, '') ?? '');
+      const currentTime = new Date();
+      const newTimeDifference =
+        currentTime.getTime() - timestampValue.getTime();
+      setTimeDifference(newTimeDifference);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timestamp]);
+
+  const formatTimeDifference = (ms: number | null): string | undefined => {
+    if (ms !== null) {
+      const minutes = Math.floor(ms / (1000 * 60));
+      const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+      return `${minutes} minutes ${seconds} seconds`;
+    } else {
+      console.log('Invalid time difference');
+      return timestamp ?? 'Invalid timestamp';
+    }
+  };
 
   return (
     <div className="Data">
@@ -84,7 +122,7 @@ export default function Data() {
             </tbody>
           </table>
           <p>
-            <i>Last Fetched: {data.Timestamp}</i>
+            <i>Last Fetched: {formatTimeDifference(timeDifference)} m</i>
           </p>
         </>
       )}
