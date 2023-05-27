@@ -100,6 +100,8 @@ except FileNotFoundError:
 
 logger.info("Starting Flask app...")
 
+values = []
+
 try:
     @app.route('/')
     def index():
