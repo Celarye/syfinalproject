@@ -39,7 +39,7 @@ export default function App() {
         Info
       </button>
       <Data />
-      <footer>
+      <footer className="App-footer">
         Made by{' '}
         <a className="App-link" href="https://github.com/Celarye">
           Celarye

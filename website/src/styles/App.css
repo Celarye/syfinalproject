@@ -4,6 +4,7 @@
   --primaryColor: #1a1a1a;
   --secondaryColor: #1987a6;
   --textColor: #eee;
+  --borderColor: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -15,8 +16,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
   text-align: center;
-  height: 100vh;
   background-color: var(--primaryColor);
   font-family: 'Titillium Web', sans-serif;
   color: var(--textColor);
@@ -24,17 +25,14 @@ body {
 
 h1 {
   margin: 0;
-  padding: 0;
 }
 
 h3 {
   margin: 0;
-  padding: 0;
 }
 
 p {
   margin: 0;
-  padding: 0;
 }
 
 button:hover {
@@ -50,16 +48,29 @@ button:hover {
   margin-bottom: 3vh;
 }
 
+.App-footer {
+  margin-top: auto;
+}
+
 .App-button {
   min-height: 5vh;
   min-width: 15vh;
   margin-bottom: 3vh;
   background-color: var(--secondaryColor);
   border: 0px solid;
-  border-radius: 10px;
-  font-size: large;
+  border-radius: 1vh;
+  font-size: x-large;
   font-weight: bold;
   color: var(--textColor);
+}
+
+.App-code-block {
+  background-color: #2d2d2d;
+  color: var(--textColor);
+  padding: 0.2vh;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  word-break: break-all;
+  border-radius: 0.25vh;
 }
 
 .App-link {

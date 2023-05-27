@@ -1,3 +1,52 @@
-.Data {
+.Data-negative-title {
   margin-bottom: 3vh;
+}
+
+.Data-negative-paragrapgh {
+  margin-bottom: 3vh;
+}
+
+.Data-example {
+  position: fixed;
+  z-index: 2;
+  overflow-y: auto;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background-color: var(--primaryColor);
+  border: 1px solid;
+  border-color: var(--borderColor);
+  border-radius: 1vh;
+}
+
+.Data-title {
+  padding-bottom: 1vh;
+}
+
+.Data-table {
+  margin: 0 auto;
+  margin-bottom: 3vh;
+  border: 1px solid;
+  border-color: var(--borderColor);
+}
+
+.Data-table2-column {
+  border-right: 1px solid;
+  border-left: 1px solid;
+  border-color: var(--borderColor);
+}
+
+.Data-table-column {
+  border-right: 1px solid;
+  border-color: var(--borderColor);
+}
+
+.Data-table-row {
+  border-bottom: 1px solid;
+  border-color: var(--borderColor);
+}
+
+.Data-last-fetched {
+  padding-bottom: 3vh;
 }
