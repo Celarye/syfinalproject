@@ -109,7 +109,7 @@ try:
         return str(values)
 
     flask_thread = Thread(target=app.run(
-        host=RASPBERRY_PI_IP_ADDRESS, port=5000))
+        host=RASPBERRY_PI_IP_ADDRESS, port=5000, threaded=True))
     flask_thread.start()
 
     logger.info("Starting sensors data logging...")
