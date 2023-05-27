@@ -13,6 +13,9 @@ import adafruit_ads1x15.ads1015 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 from adafruit_bme280 import basic as adafruit_bme280
 
+
+RASPBERRY_PI_IP_ADDRESS = input('The Raspberry Pi its IP address: ')
+
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -103,7 +106,8 @@ try:
         """Flask index"""
         return str(values)
 
-    flask_thread = Thread(target=app.run)
+    flask_thread = Thread(target=app.run(
+        host=RASPBERRY_PI_IP_ADDRESS, port=5000, debug=True))
     flask_thread.start()
 
     logger.info("Starting sensors data logging...")
@@ -151,9 +155,5 @@ try:
             logger.error(
                 "An error occurred while logging the sensors data.", exc_info=True)
 
-        except KeyboardInterrupt:
-            logger.info('Exiting sensor Data logging.')
-            break
-
 except KeyboardInterrupt:
-    logger.info('Stopping Flask app and exiting script.')
+    logger.info('Exiting sensor Data logging.')
