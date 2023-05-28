@@ -13,45 +13,50 @@ interface SensorData {
 export default function Data() {
   const [data, setData] = useState<SensorData | null>(null);
   const [timeDifference, setTimeDifference] = useState<number | null>(null);
+  const [showDataExample, setShowDataExample] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:5000/');
-      const stringValue = await response.text();
-      const cleanStringValue = stringValue.replace(/\['|'/g, '');
-      const [
-        fetchedTimestamp,
-        soilMoisture1,
-        soilMoisture2,
-        soilMoisture3,
-        temperature,
-        humidity,
-      ] = cleanStringValue.split(',');
-      console.log(fetchedTimestamp);
+      const appUrl = localStorage.getItem('appUrl');
+      if (appUrl) {
+        const response = await fetch(appUrl);
+        const stringValue = await response.text();
+        const cleanStringValue = stringValue.replace(/\['|'/g, '');
+        const [
+          fetchedTimestamp,
+          soilMoisture1,
+          soilMoisture2,
+          soilMoisture3,
+          temperature,
+          humidity,
+        ] = cleanStringValue.split(',');
 
-      setData({
-        Timestamp: fetchedTimestamp.replace(
-          /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
-          '$3-$2-$1T$4:$5:$6'
-        ),
-        'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
-        'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
-        'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
-        Temperature: parseFloat(temperature).toFixed(2),
-        Humidity: parseFloat(humidity).toFixed(2),
-      });
-      console.log('Data fetched');
+        setData({
+          Timestamp: fetchedTimestamp.replace(
+            /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+            '$3-$2-$1T$4:$5:$6'
+          ),
+          'Soil Moisture 1': parseFloat(soilMoisture1).toFixed(2),
+          'Soil Moisture 2': parseFloat(soilMoisture2).toFixed(2),
+          'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
+          Temperature: parseFloat(temperature).toFixed(2),
+          Humidity: parseFloat(humidity).toFixed(2),
+        });
+        console.log('Data fetched');
+      }
     };
 
-    const interval = setInterval(fetchData, 600000);
+    fetchData();
+
+    const interval = setInterval(fetchData, 6000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [data?.Timestamp]);
+  }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const updateTimestampDifference = () => {
       const timestampValue = new Date(data?.Timestamp ?? '');
       const currentTime = new Date();
 
@@ -63,7 +68,11 @@ export default function Data() {
         console.log('Invalid timestamp');
         setTimeDifference(null);
       }
-    }, 1000);
+    };
+
+    updateTimestampDifference();
+
+    const interval = setInterval(updateTimestampDifference, 60000);
 
     return () => {
       clearInterval(interval);
@@ -76,48 +85,128 @@ export default function Data() {
       return `${minutes} minute(s) ago`;
     } else {
       console.log('Invalid time difference');
-      return data?.Timestamp ?? 'Invalid timestamp';
+      return data?.Timestamp.replace('T', ' ') ?? 'Invalid timestamp';
     }
   };
+
+  function toggleDataExample() {
+    setShowDataExample(!showDataExample);
+  }
 
   return (
     <div className="Data">
       {!data ? (
-        <div>No Data Fetched Yet...</div>
+        <>
+          <h1 className="Data-negative-title">No Data Fetched Yet...</h1>
+          <p className="Data-negative-paragrapgh">
+            Make sure your set URL{' '}
+            <code className="App-code-block">
+              ({localStorage.getItem('appUrl') ?? 'No URL defined'})
+            </code>{' '}
+            is correct and that the sensors script is running on your Raspberry
+            Pi.
+            <br />
+            You can update your set URL through the info modal (can be opened
+            with the info button).
+          </p>
+          <button
+            className="App-button Data-negative-example-button"
+            type="button"
+            onClick={toggleDataExample}
+          >
+            Data Example
+          </button>
+          {showDataExample && (
+            <div className="Data-example">
+              <h1 className="Data-title">Data Example</h1>
+              <h3 className="Data-title">Global values</h3>
+              <table className="Data-table">
+                <thead>
+                  <tr>
+                    <th className="Data-table-column Data-table-row">
+                      Temperature
+                    </th>
+                    <th className="Data-table-row">Humidity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="Data-table-column">Temperature Value</td>
+                    <td>Humidity Value</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 className="Data-title">Soil Moistures</h3>
+              <table className="Data-table">
+                <thead className="Data-table-row">
+                  <tr>
+                    <th className="Data-table-row">Plant 1</th>
+                    <th className="Data-table2-column Data-table-row">
+                      Plant 2
+                    </th>
+                    <th className="Data-table-row">Plant 3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Plant 1 Value</td>
+                    <td className="Data-table2-column">Plant 2 Value</td>
+                    <td>Plant 3 Value</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p className="Data-last-fetched">
+                <i>Last Fetched: Fetch Time</i>
+              </p>
+              <button
+                className="App-button"
+                type="button"
+                onClick={toggleDataExample}
+              >
+                Close
+              </button>
+            </div>
+          )}
+        </>
       ) : (
         <>
-          <table>
+          <h3 className="Data-title">Global values</h3>
+          <table className="Data-table">
             <thead>
               <tr>
-                <th>Temperature</th>
-                <th>Humidity</th>
+                <th className="Data-table-column Data-table-row">
+                  Temperature
+                </th>
+                <th className="Data-table-row">Humidity</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{data.Temperature}°C</td>
+                <td className="Data-table-column">{data.Temperature}°C</td>
                 <td>{data.Humidity}%</td>
               </tr>
             </tbody>
           </table>
-          <h3>Soil Moistures</h3>
-          <table>
-            <thead>
+          <h3 className="Data-title">Soil Moistures</h3>
+          <table className="Data-table">
+            <thead className="Data-table-row">
               <tr>
-                <th>Plant 1</th>
-                <th>Plant 2</th>
-                <th>Plant 3</th>
+                <th className="Data-table-row">Plant 1</th>
+                <th className="Data-table2-column Data-table-row">Plant 2</th>
+                <th className="Data-table-row">Plant 3</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>{data['Soil Moisture 1']}%</td>
-                <td>{data['Soil Moisture 2']}%</td>
+                <td className="Data-table2-column">
+                  {data['Soil Moisture 2']}%
+                </td>
                 <td>{data['Soil Moisture 3']}%</td>
               </tr>
             </tbody>
           </table>
-          <p>
+          <p className="Data-last-fetched">
             <i>Last Fetched: {formatTimeDifference(timeDifference)}</i>
           </p>
         </>

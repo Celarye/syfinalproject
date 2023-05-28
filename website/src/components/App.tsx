@@ -32,14 +32,14 @@ export default function App() {
   }, [isShowing]);
 
   return (
-    <>
+    <div className="App">
       <img src={logo} className="App-logo" alt="logo" />
       <h1 className="App-title">House Plants Manager</h1>
       <button className="App-button" onClick={modalOpen}>
         Info
       </button>
       <Data />
-      <footer>
+      <footer className="App-footer">
         Made by{' '}
         <a className="App-link" href="https://github.com/Celarye">
           Celarye
@@ -50,6 +50,6 @@ export default function App() {
         </a>
       </footer>
       {isShowing && <Modal onClose={modalClose} isShowing={isShowing} />}
-    </>
+    </div>
   );
 }
