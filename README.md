@@ -10,8 +10,8 @@ This repository will contain things like code for the website and sensors, docum
 
 - Doing more research for my documentation.
 - Expanding and rewriting the documentation.
-- Building the first version of the website.
-- Building the first version of my practical test.
+- Cleaning up the website.
+- Adding water pump support.
 - An interview of a person connected to my final project.
 
 
