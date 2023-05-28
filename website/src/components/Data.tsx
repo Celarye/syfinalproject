@@ -118,6 +118,7 @@ export default function Data() {
           </button>
           {showDataExample && (
             <div className="Data-example">
+              <h1 className="Data-title">Data Example</h1>
               <h3 className="Data-title">Global values</h3>
               <table className="Data-table">
                 <thead>

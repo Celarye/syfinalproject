@@ -39,6 +39,10 @@ button:hover {
   cursor: pointer;
 }
 
+.App {
+  max-width: 95vw;
+}
+
 .App-logo {
   max-height: 30vh;
   margin-bottom: 3vh;
