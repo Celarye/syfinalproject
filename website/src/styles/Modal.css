@@ -80,11 +80,11 @@
   border-radius: 0.25vh;
 }
 
-.Modal-usage-input {
+.Modal-url-input {
   margin-bottom: 3vh;
 }
 
-.Modal-usage-input-field {
+.Modal-url-input-field {
   background-color: var(--primaryColor);
   border: 1px solid;
   border-color: var(--borderColor);

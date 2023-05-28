@@ -7,6 +7,8 @@ export default function Modal(props: ModalProps) {
   const [urlInput, setUrlInput] = useState('');
   const [isValidUrl, setIsValidUrl] = useState(false);
   const [isConnectClicked, setIsConnectClicked] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const storedUrl = localStorage.getItem('appUrl');
@@ -18,7 +20,7 @@ export default function Modal(props: ModalProps) {
   }, []);
 
   function modalClose() {
-    if (urlInput === '' || !isUrlValid(urlInput) || !isConnectClicked) {
+    if (urlInput === '' || !isValidUrl || !isConnectClicked) {
       return;
     }
     props?.onClose?.();
@@ -32,11 +34,14 @@ export default function Modal(props: ModalProps) {
 
   function handleConnectButtonClick() {
     if (!isUrlValid(urlInput)) {
+      setMessage('Invalid URL. Please try again.');
+      setShowMessage(true);
       return;
     }
-    setIsValidUrl(true);
-    setIsConnectClicked(true);
     localStorage.setItem('appUrl', urlInput);
+    setIsConnectClicked(true);
+    setMessage('URL saved successfully!');
+    setShowMessage(true);
   }
 
   function isUrlValid(url: string) {
@@ -96,30 +101,20 @@ export default function Modal(props: ModalProps) {
             address of your Raspberry Pi.
           </p>
           <span>
-            <div className="Modal-usage-input">
+            <div className="Modal-url-input">
               <input
-                className="Modal-usage-input-field"
+                className="Modal-url-input-field"
                 type="url"
                 placeholder="URL"
                 value={urlInput}
                 onChange={handleUrlInputChange}
               ></input>
-              {!isValidUrl && (
-                <p className="Modal-url-validation">
-                  Make sure the input is a valid URL.
-                </p>
-              )}
-              {isValidUrl && urlInput && (
-                <p className="Modal-url-validation">
-                  The entered URL is valid.
-                </p>
-              )}
+              {showMessage && <p className="Modal-url-validation">{message}</p>}
             </div>
             <button
               className="App-button Modal-url-button"
               type="button"
               onClick={handleConnectButtonClick}
-              disabled={!isValidUrl}
             >
               Connect
             </button>
@@ -129,7 +124,6 @@ export default function Modal(props: ModalProps) {
           className="Modal-close-button"
           type="button"
           onClick={modalClose}
-          disabled={!isValidUrl || (!isConnectClicked && urlInput !== '')}
         >
           &times;
         </button>

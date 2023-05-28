@@ -48,7 +48,7 @@ export default function Data() {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 600000);
+    const interval = setInterval(fetchData, 6000);
 
     return () => {
       clearInterval(interval);
