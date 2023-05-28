@@ -52,7 +52,7 @@ export default function Modal(props: ModalProps) {
 
   return (
     <>
-      <div className={`overlay${props.isShowing ? 'Show' : ''}`}></div>
+      <div className={`Modal-overlay${props.isShowing ? 'Show' : ''}`}></div>
       <div className="Modal">
         <img src={logo} className="Modal-logo" alt="logo" />
         <h1 className="Modal-title">House Plants Manager</h1>
@@ -92,13 +92,10 @@ export default function Modal(props: ModalProps) {
               https://github.com/Celarye/syfinalproject
             </code>{' '}
             and in the main directory, run{' '}
-            <code className="App-code-block">
-              bash ./sensors/sensorsStartup.sh
-            </code>{' '}
-            after this, a URL will appear in the console. Place this URL in the
-            input field below, but replace{' '}
-            <code className="App-code-block">localhost</code> with the IP
-            address of your Raspberry Pi.
+            <code className="App-code-block">cd sensors</code> and{' '}
+            <code className="App-code-block">bash sensorsStartup.sh</code>.
+            After this, a URL will appear in the console. Place this URL in the
+            input field below.
           </p>
           <span>
             <div className="Modal-url-input">

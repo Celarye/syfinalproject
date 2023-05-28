@@ -117,55 +117,58 @@ export default function Data() {
             Data Example
           </button>
           {showDataExample && (
-            <div className="Data-example">
-              <h1 className="Data-title">Data Example</h1>
-              <h3 className="Data-title">Global values</h3>
-              <table className="Data-table">
-                <thead>
-                  <tr>
-                    <th className="Data-table-column Data-table-row">
-                      Temperature
-                    </th>
-                    <th className="Data-table-row">Humidity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="Data-table-column">Temperature Value</td>
-                    <td>Humidity Value</td>
-                  </tr>
-                </tbody>
-              </table>
-              <h3 className="Data-title">Soil Moistures</h3>
-              <table className="Data-table">
-                <thead className="Data-table-row">
-                  <tr>
-                    <th className="Data-table-row">Plant 1</th>
-                    <th className="Data-table2-column Data-table-row">
-                      Plant 2
-                    </th>
-                    <th className="Data-table-row">Plant 3</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Plant 1 Value</td>
-                    <td className="Data-table2-column">Plant 2 Value</td>
-                    <td>Plant 3 Value</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="Data-last-fetched">
-                <i>Last Fetched: Fetch Time</i>
-              </p>
-              <button
-                className="App-button"
-                type="button"
-                onClick={toggleDataExample}
-              >
-                Close
-              </button>
-            </div>
+            <>
+              <div className="Data-overlay"></div>
+              <div className="Data-example">
+                <h1 className="Data-title">Data Example</h1>
+                <h3 className="Data-title">Global values</h3>
+                <table className="Data-table">
+                  <thead>
+                    <tr>
+                      <th className="Data-table-column Data-table-row">
+                        Temperature
+                      </th>
+                      <th className="Data-table-row">Humidity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="Data-table-column">Temperature Value</td>
+                      <td>Humidity Value</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <h3 className="Data-title">Soil Moistures</h3>
+                <table className="Data-table">
+                  <thead className="Data-table-row">
+                    <tr>
+                      <th className="Data-table-row">Plant 1</th>
+                      <th className="Data-table2-column Data-table-row">
+                        Plant 2
+                      </th>
+                      <th className="Data-table-row">Plant 3</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Plant 1 Value</td>
+                      <td className="Data-table2-column">Plant 2 Value</td>
+                      <td>Plant 3 Value</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p className="Data-last-fetched">
+                  <i>Last Fetched: Fetch Time</i>
+                </p>
+                <button
+                  className="App-button"
+                  type="button"
+                  onClick={toggleDataExample}
+                >
+                  Close
+                </button>
+              </div>
+            </>
           )}
         </>
       ) : (
