@@ -225,7 +225,8 @@ while RUNNING:
                             Minimum time interval since last watering not met.")
             else:
                 logger.info(
-                    "Soil moisture level for Plant 1 is above the set threshold. No watering needed.")
+                    "Soil moisture level for Plant 1 is above the set threshold.\
+                          No watering needed.")
 
             is_empty = csvfile.tell() == 0
             if is_empty:
