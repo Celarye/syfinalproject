@@ -8,6 +8,7 @@ interface SensorData {
   'Soil Moisture 3': string;
   Temperature: string;
   Humidity: string;
+  Plant1WaterTime: string;
 }
 
 export default function Data() {
@@ -29,6 +30,7 @@ export default function Data() {
           soilMoisture3,
           temperature,
           humidity,
+          Plant1WaterTime,
         ] = cleanStringValue.split(',');
 
         setData({
@@ -41,6 +43,10 @@ export default function Data() {
           'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
           Temperature: parseFloat(temperature).toFixed(2),
           Humidity: parseFloat(humidity).toFixed(2),
+          Plant1WaterTime: Plant1WaterTime.replace(
+            /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+            '$3-$2-$1T$4:$5:$6'
+          ),
         });
         console.log('Data fetched');
       }
@@ -59,15 +65,9 @@ export default function Data() {
     const updateTimestampDifference = () => {
       const timestampValue = new Date(data?.Timestamp ?? '');
       const currentTime = new Date();
-
-      if (!isNaN(timestampValue.getTime())) {
-        const newTimeDifference =
-          currentTime.getTime() - timestampValue.getTime();
-        setTimeDifference(newTimeDifference);
-      } else {
-        console.log('Invalid timestamp');
-        setTimeDifference(null);
-      }
+      const newTimeDifference =
+        currentTime.getTime() - timestampValue.getTime();
+      setTimeDifference(newTimeDifference);
     };
 
     updateTimestampDifference();
@@ -84,8 +84,28 @@ export default function Data() {
       const minutes = Math.floor(ms / (1000 * 60));
       return `${minutes} minute(s) ago`;
     } else {
-      console.log('Invalid time difference');
-      return data?.Timestamp.replace('T', ' ') ?? 'Invalid timestamp';
+      return (
+        data?.Timestamp.replace('T', ' ') ?? 'Invalid timestamp (Fetch Error)'
+      );
+    }
+  };
+
+  const formatWaterTime = (
+    waterTime: string | undefined
+  ): string | undefined => {
+    if (waterTime) {
+      const waterTimeValue = new Date(waterTime);
+      if (waterTimeValue) {
+        const currentTime = new Date();
+        const timeDifference = currentTime.getTime() - waterTimeValue.getTime();
+        const minutes = Math.floor(timeDifference / (1000 * 60));
+        return `${minutes} minute(s) ago`;
+      } else {
+        return (
+          data?.Plant1WaterTime.replace('T', ' ') ??
+          'Never watered before (Fetch Error)'
+        );
+      }
     }
   };
 
@@ -157,6 +177,9 @@ export default function Data() {
                     </tr>
                   </tbody>
                 </table>
+                <p className="Data-pant-1-response">
+                  Plant 1 Watering Time: Never watered before
+                </p>
                 <p className="Data-last-fetched">
                   <i>Last Fetched: Fetch Time</i>
                 </p>
@@ -209,6 +232,9 @@ export default function Data() {
               </tr>
             </tbody>
           </table>
+          <p className="Data-pant-1-response">
+            Plant 1 Watering Time: {formatWaterTime(data.Plant1WaterTime)}
+          </p>
           <p className="Data-last-fetched">
             <i>Last Fetched: {formatTimeDifference(timeDifference)}</i>
           </p>

@@ -201,12 +201,13 @@ while RUNNING:
                 "Temperature", "Humidity", "Plant 1 Watering"]
 
             if not WATERING_OCCURRED:
-                PLANT_1_WATERING = "Not watered yet"
+                PLANT_1_LAST_WATERING_TIME = "Not watered yet"
             else:
-                PLANT_1_WATERING = LAST_WATERING_TIME
+                PLANT_1_LAST_WATERING_TIME = LAST_WATERING_TIME
 
             values = [timestamp] + sensor_readings + \
-                [bme280.temperature, bme280.relative_humidity, PLANT_1_WATERING]
+                [bme280.temperature, bme280.relative_humidity,
+                    PLANT_1_LAST_WATERING_TIME]
 
             plant1_reading = sensor_readings[0]
 
