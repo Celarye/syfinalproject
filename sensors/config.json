@@ -17,5 +17,5 @@
     }
   ],
   "raspberry_pi_ip_address": "192.168.1.100",
-  "soil_moisture_threshold_value": 10000
+  "soil_moisture_threshold_value": 10
 }

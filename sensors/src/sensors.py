@@ -190,8 +190,7 @@ while RUNNING:
         sensor_readings = []
         for i, channel in enumerate(channels):
             soil_moisture_percentage = (
-                channel.value - WET_SATURATION[i]) / (DRY_SATURATION[i] -
-                                                      WET_SATURATION[i]) * 100
+                channel.value - DRY_SATURATION[i]) / (WET_SATURATION[i] - DRY_SATURATION[i]) * 100
             sensor_readings.append(soil_moisture_percentage)
 
         with open(filename, "a", newline='', encoding='UTF-8') as csvfile:
