@@ -154,7 +154,9 @@ if not RASPBERRY_PI_IP_ADDRESS or not SOIL_MOISTURE_THRESHOLD_VALUE_PLANT_1:
 
 # Start Flask app
 logger.info("Starting Flask app...")
-values = []
+
+values = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
+    "Temperature", "Air Humidity", "Plant Watering"]
 
 last_watering_time = datetime.datetime.now()
 
@@ -196,42 +198,45 @@ while RUNNING:
             writer = csv.writer(csvfile)
 
             header = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
-                "Temperature", "Humidity"]
+                "Temperature", "Humidity", "Plant Watering"]
 
             values = [timestamp] + sensor_readings + \
-                [bme280.temperature, bme280.relative_humidity]
+                [bme280.temperature, bme280.relative_humidity, "Not watered yet"]
+
+            plant1_reading = sensor_readings[0]
+
+            if plant1_reading < SOIL_MOISTURE_THRESHOLD_VALUE_PLANT_1:
+                current_time = datetime.datetime.now()
+                time_since_last_watering = current_time - last_watering_time
+                if time_since_last_watering.total_seconds() >= 1800:
+                    logger.info(
+                        "Soil moisture level for Plant 1 has dropped below the set threshold.\
+                            Starting the watering process...")
+                    relay_pin.on()
+                    last_watering_time = current_time
+                    time.sleep(5)
+                    relay_pin.off()
+                    values[-1] = last_watering_time
+                    logger.info("Successfully watered Plant 1 at %s",
+                                last_watering_time)
+                else:
+                    logger.info(
+                        "Skipping watering for Plant 1.\
+                            Minimum time interval since last watering not met.")
+            else:
+                logger.info(
+                    "Soil moisture level for Plant 1 is above the set threshold. No watering needed.")
 
             is_empty = csvfile.tell() == 0
             if is_empty:
                 writer.writerow(header)
             writer.writerow(values)
 
-        logger.info("Sensors values written to %s at %s.",
+        logger.info("Sensors values and response data written to %s at %s.",
                     filename, timestamp)
-        logger.info("Sensors values: %s", values)
-
-        plant1_reading = sensor_readings[0]
-
-        if plant1_reading < SOIL_MOISTURE_THRESHOLD_VALUE_PLANT_1:
-            current_time = datetime.datetime.now()
-            time_since_last_watering = current_time - last_watering_time
-            if time_since_last_watering.total_seconds() >= 1800:
-                logger.info(
-                    "Soil moisture level for Plant 1 has dropped below the set threshold.\
-                        Starting the watering process...")
-                relay_pin.on()
-                last_watering_time = current_time
-                time.sleep(5)
-                relay_pin.off()
-                values.append(last_watering_time)
-                logger.info("Successfully watered Plant 1 at %s",
-                            last_watering_time)
-            else:
-                logger.info(
-                    "Skipping watering for Plant 1.\
-                        Minimum time interval since last watering not met.")
-        else:
-            values.append("Not watered yet")
+        logger.info("Flask app data has been updated (http://%s:5000/).",
+                    RASPBERRY_PI_IP_ADDRESS)
+        logger.info("Sensors values and response data: %s", values)
 
         time.sleep(SAMPLING_INTERVAL)
 
