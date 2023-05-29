@@ -43,10 +43,7 @@ export default function Data() {
           'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
           Temperature: parseFloat(temperature).toFixed(2),
           Humidity: parseFloat(humidity).toFixed(2),
-          Plant1WaterTime: Plant1WaterTime.replace(
-            /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
-            '$3-$2-$1T$4:$5:$6'
-          ),
+          Plant1WaterTime: Plant1WaterTime,
         });
         console.log('Data fetched');
       }
@@ -94,17 +91,19 @@ export default function Data() {
     waterTime: string | undefined
   ): string | undefined => {
     if (waterTime) {
-      const waterTimeValue = new Date(waterTime);
+      const waterTimeValue = new Date(
+        waterTime.replace(
+          /(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/,
+          '$3-$2-$1T$4:$5:$6'
+        )
+      );
       if (waterTimeValue) {
         const currentTime = new Date();
         const timeDifference = currentTime.getTime() - waterTimeValue.getTime();
         const minutes = Math.floor(timeDifference / (1000 * 60));
         return `${minutes} minute(s) ago`;
       } else {
-        return (
-          data?.Plant1WaterTime.replace('T', ' ') ??
-          'Never watered before (Fetch Error)'
-        );
+        return data?.Plant1WaterTime ?? 'Not watered yet (Fetch Error)';
       }
     }
   };
@@ -141,7 +140,7 @@ export default function Data() {
               <div className="Data-overlay"></div>
               <div className="Data-example">
                 <h1 className="Data-title">Data Example</h1>
-                <h3 className="Data-title">Global values</h3>
+                <h3 className="Data-title">Global Values</h3>
                 <table className="Data-table">
                   <thead>
                     <tr>
@@ -153,8 +152,8 @@ export default function Data() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="Data-table-column">Temperature Value</td>
-                      <td>Humidity Value</td>
+                      <td className="Data-table-column">23.56°C</td>
+                      <td>47.38%</td>
                     </tr>
                   </tbody>
                 </table>
@@ -171,17 +170,17 @@ export default function Data() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Plant 1 Value</td>
-                      <td className="Data-table2-column">Plant 2 Value</td>
-                      <td>Plant 3 Value</td>
+                      <td>23.82%</td>
+                      <td className="Data-table2-column">17.63%</td>
+                      <td>11.14%</td>
                     </tr>
                   </tbody>
                 </table>
-                <p className="Data-pant-1-response">
-                  Plant 1 Watering Time: Never watered before
+                <p className="Data-plant-1-response">
+                  Plant 1 Watering Time: Not watered yet
                 </p>
                 <p className="Data-last-fetched">
-                  <i>Last Fetched: Fetch Time</i>
+                  <i>Last Fetched: 2 minute(s) ago</i>
                 </p>
                 <button
                   className="App-button"
@@ -196,7 +195,7 @@ export default function Data() {
         </>
       ) : (
         <>
-          <h3 className="Data-title">Global values</h3>
+          <h3 className="Data-title">Global Values</h3>
           <table className="Data-table">
             <thead>
               <tr>
@@ -232,7 +231,7 @@ export default function Data() {
               </tr>
             </tbody>
           </table>
-          <p className="Data-pant-1-response">
+          <p className="Data-plant-1-response">
             Plant 1 Watering Time: {formatWaterTime(data.Plant1WaterTime)}
           </p>
           <p className="Data-last-fetched">

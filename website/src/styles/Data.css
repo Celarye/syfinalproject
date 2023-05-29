@@ -51,6 +51,10 @@
   border-color: var(--borderColor);
 }
 
+.Data-plant-1-response {
+  padding-bottom: 3vh;
+}
+
 .Data-last-fetched {
   padding-bottom: 3vh;
 }
