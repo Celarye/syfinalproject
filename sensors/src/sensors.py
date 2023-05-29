@@ -156,9 +156,10 @@ if not RASPBERRY_PI_IP_ADDRESS or not SOIL_MOISTURE_THRESHOLD_VALUE_PLANT_1:
 logger.info("Starting Flask app...")
 
 values = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
-    "Temperature", "Air Humidity", "Plant Watering"]
+    "Temperature", "Air Humidity", "Plant 1 Watering"]
 
-last_watering_time = datetime.datetime.now()
+WATERING_OCCURRED = False
+last_watering_time = None
 
 
 @app.route('/')
@@ -197,10 +198,15 @@ while RUNNING:
             writer = csv.writer(csvfile)
 
             header = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels] + [
-                "Temperature", "Humidity", "Plant Watering"]
+                "Temperature", "Humidity", "Plant 1 Watering"]
+
+            if not WATERING_OCCURRED:
+                PLANT_1_WATERING = "Not watered yet"
+            else:
+                PLANT_1_WATERING = last_watering_time
 
             values = [timestamp] + sensor_readings + \
-                [bme280.temperature, bme280.relative_humidity, "Not watered yet"]
+                [bme280.temperature, bme280.relative_humidity, PLANT_1_WATERING]
 
             plant1_reading = sensor_readings[0]
 
@@ -216,6 +222,7 @@ while RUNNING:
                     time.sleep(5)
                     relay_pin.off()
                     values[-1] = last_watering_time
+                    WATERING_OCCURRED = True
                     logger.info("Successfully watered Plant 1 at %s",
                                 last_watering_time)
                 else:
