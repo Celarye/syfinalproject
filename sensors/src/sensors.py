@@ -159,7 +159,7 @@ values = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels]
     "Temperature", "Air Humidity", "Plant 1 Watering"]
 
 WATERING_OCCURRED = False
-last_watering_time = None
+LAST_WATERING_TIME = None
 
 
 @app.route('/')
@@ -203,7 +203,7 @@ while RUNNING:
             if not WATERING_OCCURRED:
                 PLANT_1_WATERING = "Not watered yet"
             else:
-                PLANT_1_WATERING = last_watering_time
+                PLANT_1_WATERING = LAST_WATERING_TIME
 
             values = [timestamp] + sensor_readings + \
                 [bme280.temperature, bme280.relative_humidity, PLANT_1_WATERING]
@@ -212,19 +212,19 @@ while RUNNING:
 
             if plant1_reading < SOIL_MOISTURE_THRESHOLD_VALUE_PLANT_1:
                 current_time = datetime.datetime.now()
-                time_since_last_watering = current_time - last_watering_time
+                time_since_last_watering = current_time - LAST_WATERING_TIME
                 if time_since_last_watering.total_seconds() >= 1800:
                     logger.info(
                         "Soil moisture level for Plant 1 has dropped below the set threshold.\
                             Starting the watering process...")
                     relay_pin.on()
-                    last_watering_time = current_time
+                    LAST_WATERING_TIME = current_time
                     time.sleep(5)
                     relay_pin.off()
-                    values[-1] = last_watering_time
+                    values[-1] = LAST_WATERING_TIME
                     WATERING_OCCURRED = True
                     logger.info("Successfully watered Plant 1 at %s",
-                                last_watering_time)
+                                LAST_WATERING_TIME)
                 else:
                     logger.info(
                         "Skipping watering for Plant 1.\
