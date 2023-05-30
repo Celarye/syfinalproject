@@ -166,7 +166,7 @@ LAST_WATERING_TIME = None
 def index():
     """Flask index"""
     response = app.make_response(str(values))
-    response.headers['Access-Control-Allow-Origin'] = 'https://celarye.github.io'
+    response.headers['Access-Control-Allow-Private-Network'] = 'True'
     return response
 
 
