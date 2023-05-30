@@ -32,7 +32,7 @@ logger.info("Water pump for plant 1 connected.")
 
 # Set up Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins='https://celarye.github.io')
 
 # Define calibration file and soil moisture sensors values
 CALIBRATION_FILE = 'config.json'
@@ -165,7 +165,9 @@ LAST_WATERING_TIME = None
 @app.route('/')
 def index():
     """Flask index"""
-    return str(values)
+    response = app.make_response(str(values))
+    response.headers['Access-Control-Allow-Origin'] = 'https://celarye.github.io'
+    return response
 
 
 # Start Flask app in a separate thread
@@ -258,6 +260,5 @@ while RUNNING:
         logger.info(
             "Exiting sensor data monitoring, response, logging and terminating the Flask app.")
         relay_pin.close()
+        flask_thread.join()
         RUNNING = False
-
-flask_thread.join()
