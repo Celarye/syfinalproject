@@ -8,7 +8,7 @@ interface SensorData {
   'Soil Moisture 3': string;
   Temperature: string;
   Humidity: string;
-  Plant1WaterTime: string;
+  Plant1WaterTimestamp: string;
 }
 
 export default function Data() {
@@ -22,7 +22,7 @@ export default function Data() {
       if (appUrl) {
         const response = await fetch(appUrl);
         const stringValue = await response.text();
-        const cleanStringValue = stringValue.replace(/\['|'/g, '');
+        const cleanStringValue = stringValue.replace(/\[|"|\]/g, '');
         const [
           fetchedTimestamp,
           soilMoisture1,
@@ -30,7 +30,7 @@ export default function Data() {
           soilMoisture3,
           temperature,
           humidity,
-          Plant1WaterTime,
+          fetchedPlant1WaterTimestamp,
         ] = cleanStringValue.split(',');
 
         setData({
@@ -43,7 +43,7 @@ export default function Data() {
           'Soil Moisture 3': parseFloat(soilMoisture3).toFixed(2),
           Temperature: parseFloat(temperature).toFixed(2),
           Humidity: parseFloat(humidity).toFixed(2),
-          Plant1WaterTime: Plant1WaterTime,
+          Plant1WaterTimestamp: fetchedPlant1WaterTimestamp,
         });
         console.log('Data fetched');
       }
@@ -51,12 +51,12 @@ export default function Data() {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 6000);
+    const interval = setInterval(fetchData, 60000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [data?.Timestamp, data?.Plant1WaterTimestamp]);
 
   useEffect(() => {
     const updateTimestampDifference = () => {
@@ -97,13 +97,13 @@ export default function Data() {
           '$3-$2-$1T$4:$5:$6'
         )
       );
-      if (waterTimeValue) {
+      if (waterTimeValue && !isNaN(waterTimeValue.getTime())) {
         const currentTime = new Date();
         const timeDifference = currentTime.getTime() - waterTimeValue.getTime();
         const minutes = Math.floor(timeDifference / (1000 * 60));
         return `${minutes} minute(s) ago`;
       } else {
-        return data?.Plant1WaterTime ?? 'Not watered yet (Fetch Error)';
+        return data?.Plant1WaterTimestamp ?? 'Not watered yet (Fetch Error)';
       }
     }
   };
@@ -177,7 +177,7 @@ export default function Data() {
                   </tbody>
                 </table>
                 <p className="Data-plant-1-response">
-                  Plant 1 Watering Time: Not watered yet
+                  Plant 1 Last Water Time: Not watered yet
                 </p>
                 <p className="Data-last-fetched">
                   <i>Last Fetched: 2 minute(s) ago</i>
@@ -232,7 +232,8 @@ export default function Data() {
             </tbody>
           </table>
           <p className="Data-plant-1-response">
-            Plant 1 Watering Time: {formatWaterTime(data.Plant1WaterTime)}
+            Plant 1 Last Water Time:{' '}
+            {formatWaterTime(data.Plant1WaterTimestamp)}
           </p>
           <p className="Data-last-fetched">
             <i>Last Fetched: {formatTimeDifference(timeDifference)}</i>
