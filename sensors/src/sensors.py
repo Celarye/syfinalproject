@@ -32,7 +32,7 @@ logger.info("Water pump for plant 1 connected.")
 
 # Set up Flask app
 app = Flask(__name__)
-CORS(app, origins='https://celarye.github.io')
+CORS(app)
 
 # Define calibration file and soil moisture sensors values
 CALIBRATION_FILE = 'config.json'
