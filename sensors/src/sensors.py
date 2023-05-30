@@ -221,9 +221,9 @@ while RUNNING:
                         "Soil moisture level for Plant 1 has dropped below the set threshold.\
                             Starting the watering process...")
                     relay_pin.on()
-                    LAST_WATERING_TIME = current_time
-                    time.sleep(5)
+                    time.sleep(3)
                     relay_pin.off()
+                    LAST_WATERING_TIME = current_time
                     values[-1] = LAST_WATERING_TIME
                     WATERING_OCCURRED = True
                     logger.info("Successfully watered Plant 1 at %s",
