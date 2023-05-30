@@ -165,9 +165,7 @@ LAST_WATERING_TIME = None
 @app.route('/')
 def index():
     """Flask index"""
-    response = app.make_response(str(values))
-    response.headers['Access-Control-Allow-Private-Network'] = 'True'
-    return response
+    return values
 
 
 # Start Flask app in a separate thread
