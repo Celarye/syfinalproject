@@ -62,7 +62,7 @@ except FileNotFoundError:
 
     for i, channel in enumerate(channels):
         dry_check = input(
-            f"Is Capacitive Sensor for {sensor_labels[i]} Dry? [y]: ")
+            f"Is the soil moisture sensor for {sensor_labels[i]} dry? [y]: ")
 
         if dry_check.lower() == 'y':
             DRY_SATURATION[i] = channel.value
@@ -78,7 +78,7 @@ except FileNotFoundError:
             logger.info("%5d\t%5.3f", channel.value, channel.voltage)
 
         wet_check = input(
-            f"Is Capacitive Sensor for {sensor_labels[i]} in Water? [y]: ")
+            f"Is the soil moisture sensor for {sensor_labels[i]} in the water? [y]: ")
 
         if wet_check.lower() == 'y':
             WET_SATURATION[i] = channel.value
@@ -190,6 +190,8 @@ while RUNNING:
 
         sensor_readings = []
         for i, channel in enumerate(channels):
+            logger.info("Raw plant %d soil moisture sensor value: %s", [
+                        i], channel.value)
             soil_moisture_percentage = (
                 channel.value - DRY_SATURATION[i]) / (WET_SATURATION[i] - DRY_SATURATION[i]) * 100
             sensor_readings.append(soil_moisture_percentage)
