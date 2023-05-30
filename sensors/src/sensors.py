@@ -192,8 +192,8 @@ while RUNNING:
 
         sensor_readings = []
         for i, channel in enumerate(channels):
-            logger.info("Raw plant %d soil moisture sensor value: %s", [
-                        i], channel.value)
+            logger.info(
+                "Raw plant %d soil moisture sensor value: %s", i, channel.value)
             soil_moisture_percentage = (
                 channel.value - DRY_SATURATION[i]) / (WET_SATURATION[i] - DRY_SATURATION[i]) * 100
             sensor_readings.append(soil_moisture_percentage)
