@@ -22,6 +22,8 @@ jobs:
       - name: Copy CNAME
         working-directory: ./website
         run: cp CNAME ./build/
+      - name: Copy README
+        run: cp README.md ./website/build/
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
