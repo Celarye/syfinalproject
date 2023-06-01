@@ -1,0 +1,34 @@
+name: Website Build
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'website/**'
+      
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
+        working-directory: ./website
+        run: npm install
+      - name: Build
+        working-directory: ./website
+        run: npm run build --if-present
+      - name: Copy CNAME
+        working-directory: ./website
+        run: cp CNAME ./build/
+      - name: Copy README
+        run: cp README.md ./website/build/
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: ./website/build
+          token: ${{ secrets.GITHUB_TOKEN }}
