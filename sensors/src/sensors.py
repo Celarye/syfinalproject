@@ -159,7 +159,7 @@ values = ["Timestamp"] + [f"Soil Moisture ({label})" for label in sensor_labels]
     "Temperature", "Air Humidity", "Plant 1 Watering"]
 
 WATERING_OCCURRED = False
-LAST_WATERING_TIME = None
+LAST_WATERING_TIME = datetime.datetime.now()
 
 
 @app.route('/')
