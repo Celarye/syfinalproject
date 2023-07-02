@@ -1,6 +1,7 @@
 {
   "name": "website",
   "version": "0.1.0",
+  "homepage": "https://celarye.github.io/syfinalproject/",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
