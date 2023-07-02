@@ -21,9 +21,6 @@ jobs:
       - name: Build
         working-directory: ./website
         run: npm run build --if-present
-      - name: Copy CNAME
-        working-directory: ./website
-        run: cp CNAME ./build/
       - name: Copy README
         run: cp README.md ./website/build/
       - name: Deploy
