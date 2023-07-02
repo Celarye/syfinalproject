@@ -8,16 +8,7 @@ This repository will contain things like code for the website and sensors, docum
 
 ---
 
-## Currently working on
-
-- Doing more research for my documentation.
-- Expanding and rewriting the documentation.
-- Cleaning up the website.
-- Adding water pump support.
-- An interview of a person connected to my final project.
-
-
-## The way this repository will work
+## The way this repository works
 
 - Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a weekly basis.
 - Major releases (e.g. v0.2.0) will corresponded with certain phases of my project and will be on a monthly to bimonthly basis.
