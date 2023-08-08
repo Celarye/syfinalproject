@@ -1,4 +1,4 @@
-# Senior year final project
+# ARCHIVED: Senior year final project
 
 [![Website Build](https://github.com/Celarye/syfinalproject/actions/workflows/websiteBuild.yml/badge.svg?branch=master)](https://github.com/Celarye/syfinalproject/actions/workflows/websiteBuild.yml) [![pages-build-deployment](https://github.com/Celarye/syfinalproject/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages)](https://github.com/Celarye/syfinalproject/actions/workflows/pages/pages-build-deployment)
 
