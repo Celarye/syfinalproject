@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/syfinalproject/static/css/main.0f8a4165.css",
+    "main.js": "/syfinalproject/static/js/main.4885ff6b.js",
+    "static/media/logo.png": "/syfinalproject/static/media/logo.ecc323ee6b1f285c2281.png",
+    "index.html": "/syfinalproject/index.html",
+    "main.0f8a4165.css.map": "/syfinalproject/static/css/main.0f8a4165.css.map",
+    "main.4885ff6b.js.map": "/syfinalproject/static/js/main.4885ff6b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0f8a4165.css",
+    "static/js/main.4885ff6b.js"
+  ]
+}
