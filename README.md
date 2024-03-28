@@ -4,8 +4,6 @@
 
 This repository will contain things like code for the website and sensors, documentation of this project (in Dutch), spreadsheets of collected data and pictures of my practical test. For more info I recommend reading the documentation (the `final-project.docx` file) or checking out the corresponding powerpoint (the `final-project.pptx` file).
 
----
-
 ## The way this repository works
 
 - Minor releases (e.g. v0.2.1) will be small changes and additions and will be on a weekly basis.
